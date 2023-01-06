@@ -28,4 +28,4 @@ To install the library,
 - [@ChocoCurrencyTest](documentation/ChocoCurrencyTest.md)
 
 
-## Sample collection [HERE]()
+## Sample collection [HERE](documentation/sample/sampleCollection.json)
