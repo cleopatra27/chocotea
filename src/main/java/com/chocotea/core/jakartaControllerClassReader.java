@@ -2,63 +2,50 @@ package com.chocotea.core;
 
 import com.chocotea.bean.postman.*;
 import com.chocotea.core.annotations.ChocoRandom;
-import org.springframework.web.bind.annotation.*;
-
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.chocotea.bean.HTTPVerbs.*;
+import static com.chocotea.bean.HTTPVerbs.DELETE;
 
-public class SpringControllerClassReader extends ControllerReader{
+public class jakartaControllerClassReader extends ControllerReader {
 
-    public SpringControllerClassReader(Method method, Collection collection, Class<?> clazz, Item item, List<Item> testItems) {
-        super(method, collection, clazz, true, item, testItems);
+    public jakartaControllerClassReader(Method method, Collection collection, Class<?> clazz, Item requestFolder, List<Item> testItems) {
+        super(method, collection, clazz, false, requestFolder, testItems);
     }
-
 
     @Override
     public void handleMappings(Method method, Item item, String baseUrl) {
-        if (method.isAnnotationPresent(PostMapping.class)) {
-
+        System.out.println(Arrays.toString(method.getDeclaredAnnotations()));
+        if (method.isAnnotationPresent(jakarta.ws.rs.POST.class)) {
             //set method
             item.getRequest().setMethod(POST);
-            item.getRequest().setUrl(new Url(baseUrl + method.getAnnotation(PostMapping.class).value()[0]));
-
-            //add paths
-            item.getRequest().getUrl().getPath().addAll(
-                        List.of(method.getAnnotation(PostMapping.class).value()[0].split("/"))
-                );
-
-        } else if (method.isAnnotationPresent(GetMapping.class)) {
+        } else if (method.isAnnotationPresent(jakarta.ws.rs.GET.class)) {
             //set method
             item.getRequest().setMethod(GET);
-            item.getRequest().setUrl(new Url(baseUrl + method.getAnnotation(GetMapping.class).value()[0]));
-
-            //add paths
-            item.getRequest().getUrl().getPath().addAll(
-                    List.of(method.getAnnotation(GetMapping.class).value()[0].split("/"))
-            );
-        } else if (method.isAnnotationPresent(PutMapping.class)) {
+        } else if (method.isAnnotationPresent(jakarta.ws.rs.PUT.class)) {
             //set method
             item.getRequest().setMethod(PUT);
-            item.getRequest().setUrl(new Url(baseUrl + method.getAnnotation(PutMapping.class).value()[0]));
-
-            //add paths
-            item.getRequest().getUrl().getPath().addAll(
-                    List.of(method.getAnnotation(PutMapping.class).value()[0].split("/"))
-            );
-        } else if (method.isAnnotationPresent(DeleteMapping.class)) {
+        } else if (method.isAnnotationPresent(jakarta.ws.rs.DELETE.class)) {
             //set method
             item.getRequest().setMethod(DELETE);
-            item.getRequest().setUrl(new Url(baseUrl + method.getAnnotation(DeleteMapping.class).value()[0]));
-
-            //add paths
-            item.getRequest().getUrl().getPath().addAll(
-                    List.of(method.getAnnotation(DeleteMapping.class).value()[0].split("/"))
-            );
+        }else{
+            throw new RuntimeException("Missing mapping");
         }
+
+        //add url
+        item.getRequest().setUrl(new Url(baseUrl + method.getAnnotation(jakarta.ws.rs.Path.class).value()));
+
+        //add paths
+        item.getRequest().getUrl().getPath().addAll(
+                List.of(method.getAnnotation(jakarta.ws.rs.Path.class).value().split("/"))
+        );
+
     }
 
     @Override
@@ -67,16 +54,16 @@ public class SpringControllerClassReader extends ControllerReader{
                 {
                     Arrays.stream(n).forEach(header -> {
                         AtomicReference<String> head = new AtomicReference<>("");
-                        if (header.annotationType().equals(RequestHeader.class)) {
+                        if (header.annotationType().equals(HeaderParam.class)) {
 
                             //if ChocoRandom; handle
                             Arrays.stream(n).forEach(val -> {
-                                if(val.annotationType().equals(ChocoRandom.class)){
-                                    head.set("{{$"+((ChocoRandom) val).dynamic() + "}}");
+                                if (val.annotationType().equals(ChocoRandom.class)) {
+                                    head.set("{{$" + ((ChocoRandom) val).dynamic() + "}}");
                                 }
                             });
 
-                            item.getRequest().getHeader().add(new Header(((RequestHeader) header).value(), head.get()));
+                            item.getRequest().getHeader().add(new Header(((HeaderParam) header).value(), head.get()));
                         }
                     });
                 }
@@ -92,30 +79,27 @@ public class SpringControllerClassReader extends ControllerReader{
                     Arrays.stream(n).forEach(qury -> {
                         AtomicReference<String> param = new AtomicReference<>("");
 
-                        if (qury.annotationType().equals(RequestParam.class)) {
+                        if (qury.annotationType().equals(QueryParam.class)) {
 
                             //if ChocoRandom; handle
                             Arrays.stream(n).forEach(val -> {
-                                if(val.annotationType().equals(ChocoRandom.class)){
-                                    param.set("{{$"+((ChocoRandom) val).dynamic() + "}}");
+                                if (val.annotationType().equals(ChocoRandom.class)) {
+                                    param.set("{{$" + ((ChocoRandom) val).dynamic() + "}}");
                                 }
                             });
 
-                            item.getRequest().getUrl().getQuery().add(new Query(((RequestParam) qury).value(), param.get()));
+                            item.getRequest().getUrl().getQuery().add(new Query(((QueryParam) qury).value(), param.get()));
 
                             if (query[0].equals("?")) {
-                                query[0] = query[0] + ((RequestParam) qury).value() + param + "=";
+                                query[0] = query[0] + ((QueryParam) qury).value() + param + "=";
                             } else {
                                 query[0] = query[0] + concatenator
-                                        + ((RequestParam) qury).value() + param + "=";
+                                        + ((QueryParam) qury).value() + param + "=";
                             }
                         }
                     });
                 }
         );
-
-        //add to url
-        item.getRequest().getUrl().setRaw(item.getRequest().getUrl().getRaw() + query[0]);
     }
 
     @Override
@@ -123,7 +107,7 @@ public class SpringControllerClassReader extends ControllerReader{
         Arrays.stream(method.getParameterAnnotations()).forEach(n ->
                 {
                     Arrays.stream(n).forEach(param -> {
-                        if (param.annotationType().equals(PathVariable.class)) {
+                        if (param.annotationType().equals(PathParam.class)) {
                             //if ChocoRandom; handle
                             Arrays.stream(n).forEach(val -> {
                                 if(val.annotationType().equals(ChocoRandom.class)){
@@ -131,7 +115,7 @@ public class SpringControllerClassReader extends ControllerReader{
                                     List<String> paths = item.getRequest().getUrl().getPath();
                                     //get variable with name from list and replace
                                     for (int i = 0; i < paths.size() ; i++) {
-                                        if(paths.get(i).contains(((PathVariable) param).value())){
+                                        if(paths.get(i).contains(((PathParam) param).value())){
                                             paths.set(i, "{{$"+((ChocoRandom) val).dynamic() + "}}");
                                         }
                                     }
@@ -144,3 +128,4 @@ public class SpringControllerClassReader extends ControllerReader{
         );
     }
 }
+

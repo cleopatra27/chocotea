@@ -1,0 +1,1 @@
+{"name":"ootherQ","request":{"auth":{"empty":false,"mapType":"java.util.HashMap"},"method":"GET","header":[],"body":{"options":{"raw":{"language":"json"}}},"url":{"raw":"https://example.com/data?dayID=","protocol":"https","host":["example","com"],"path":["","data"],"query":[{"key":"dayID","value":"","disabled":false}]}},"response":[]}

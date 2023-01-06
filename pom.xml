@@ -7,6 +7,7 @@
     <groupId>com.chocotea</groupId>
     <artifactId>JavaToPostman</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
@@ -36,6 +37,11 @@
             <artifactId>gson</artifactId>
             <version>2.10</version>
         </dependency>
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>1.0.1</version>
+            </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -63,5 +69,23 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+<!--                <configuration>-->
+<!--                    <proc>none</proc>-->
+<!--                    <source>19</source>-->
+<!--                    <target>19</target>-->
+<!--                    <annotationProcessors>-->
+<!--                        <proc>com.chocotea.core.CollectionProcessor</proc>-->
+<!--                    </annotationProcessors>-->
+<!--                </configuration>-->
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

@@ -10,9 +10,7 @@ public class TestGenerator {
     private Item positive;
     private Item negative;
     private Item mixed;
-    private Item testFolder;
-    private Collection collection;
-    private List<Item> testItems = new ArrayList<>();
+     private List<Item> testItems;
     //negative tests
     private List<Item> negativeItems = new ArrayList<>();
 
@@ -22,15 +20,13 @@ public class TestGenerator {
     //mixed tests
     private List<Item> mixedItems = new ArrayList<>();
 
-    public TestGenerator(Collection collection){
-        //create folder tests
-        this.testFolder = new Item("TESTS");
+    public TestGenerator(List<Item> testItems){
+        this.testItems = testItems;
 
         //create folder for POSITIVE OUTCOME, NEGATIVE OUTCOME and POSITIVE OUTCOME for each method
         this.positive = new Item("POSITIVE OUTCOME");
         this.negative = new Item("NEGATIVE OUTCOME");
         this.mixed = new Item("MIXED OUTCOME");
-        this.collection = collection;
     }
 
     public void generateTests(String val, Item item, String methodName) throws ClassNotFoundException {
@@ -54,10 +50,6 @@ public class TestGenerator {
         testItems.add(this.negative);
         testItems.add(this.positive);
 
-        this.testFolder.setItem(testItems);
-
-        //add to collection
-        collection.getItem().add(this.testFolder);
     }
 
     public void generateRequestBodyTests(String val, Item item, String methodName) throws ClassNotFoundException {

@@ -9,8 +9,10 @@ import lombok.Setter;
 import com.chocotea.core.annotations.ChocoRandom;
 import com.chocotea.utility.Properties;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Getter
@@ -18,10 +20,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Info {
 
-    @NotBlank
+    @NotNull
     private String _postman_id;
     @NotBlank
     private String name;
+
     @NotBlank
     private String schema;
 

@@ -22,10 +22,10 @@ import static com.chocotea.bean.postman.Modes.raw;
 
 public abstract class ControllerReader {
 
-    private Item requestFolder = new Item("REQUESTS");
     public Item item;
     private Method method;
     private Collection collection;
+    private List<Item> testItems;
     public String baseUrl;
     private boolean createTest;
     private String protocol;
@@ -33,8 +33,9 @@ public abstract class ControllerReader {
     private JavaxRequest javaxRequest;
 
 
-    public ControllerReader(Method method, Collection collection, Class<?> clazz, boolean spring){
-        this.item = new Item(method.getName());
+    public ControllerReader(Method method, Collection collection, Class<?> clazz, boolean spring, Item item, List<Item> testItems){
+        this.testItems = testItems;
+        this.item = item;
         this.method = method;
         this.collection = collection;
         if(spring) {
@@ -91,14 +92,6 @@ public abstract class ControllerReader {
             item.getRequest().setAuth(auth(javaxRequest.auth(), javaxRequest.authValue()).toString());
         }
 
-        List<Item> requestItems = new ArrayList<>();
-        requestItems.add(item);
-
-        requestFolder.setItem(requestItems);
-
-        //add item to collection
-        collection.getItem().add(requestFolder);
-
         //save item in /resources folder
         writeToFile();
 
@@ -149,20 +142,20 @@ public abstract class ControllerReader {
     private void handleTests() throws ClassNotFoundException {
         //call generate tests
         if(springRequest != null) {
-            new TestGenerator(collection).generateTests(springRequest.requestBean().getName(), item, "test");
+            new TestGenerator(testItems).generateTests(springRequest.request().getName(), item, "test");
         }else{
-            new TestGenerator(collection).generateTests(javaxRequest.requestBean().getName(), item, "test");
+            new TestGenerator(testItems).generateTests(javaxRequest.requestBean().getName(), item, "test");
         }
     }
 
     private void handleBean() {
         if (springRequest != null) {
-            if (springRequest.requestBean() != null) {
+            if (springRequest.request() != DefaultClass.class) {
                 item.getRequest().getBody().setMode(raw.name());
-                item.getRequest().getBody().setRaw(BeanReader.toString(springRequest.requestBean().getName()));
+                item.getRequest().getBody().setRaw(BeanReader.toString(springRequest.request().getName()));
             }
         } else {
-            if (javaxRequest.requestBean() != null) {
+            if (javaxRequest.requestBean() != DefaultClass.class) {
                 item.getRequest().getBody().setMode(raw.name());
                 item.getRequest().getBody().setRaw(BeanReader.toString(javaxRequest.requestBean().getName()));
             }
