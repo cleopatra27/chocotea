@@ -1,0 +1,460 @@
+{
+  "info": {
+    "_postman_id": "ef9a362e-79d5-4b9c-b28d-3fc5edf36d41",
+    "name": "susan more collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TESTS",
+      "request": {
+        "header": [],
+        "body": {
+          "options": {
+            "raw": {}
+          }
+        }
+      },
+      "response": [],
+      "item": [
+        {
+          "name": "MIXED OUTCOME",
+          "request": {
+            "header": [],
+            "body": {
+              "options": {
+                "raw": {}
+              }
+            }
+          },
+          "response": [],
+          "item": [
+            null,
+            null,
+            null,
+            null,
+            {
+              "name": "VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_EMPTY_FIELDS_schema",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "type": "default",
+                    "key": "Authorization",
+                    "value": ""
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"schema\":\"\",\"reference\":\"{{$randomFirstName}}\",\"name\":\"\",\"_postman_id\":\"\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://example.com/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID}?id{{$randomCatchPhrase}}=&ids=",
+                  "protocol": "https",
+                  "host": [
+                    "example",
+                    "com"
+                  ],
+                  "path": [
+                    "",
+                    "{{$randomEmail}}",
+                    "seasons",
+                    "{seasonID}",
+                    "days",
+                    "{dayID}",
+                    "skiers",
+                    "{skierID}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{$randomCatchPhrase}}",
+                      "disabled": false
+                    },
+                    {
+                      "key": "ids",
+                      "value": "",
+                      "disabled": false
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status test\", function () {\n    pm.response.to.have.status(400);\n});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "NEGATIVE OUTCOME",
+          "request": {
+            "header": [],
+            "body": {
+              "options": {
+                "raw": {}
+              }
+            }
+          },
+          "response": [],
+          "item": [
+            {
+              "name": "VERIFY_ENDPOINT_ERROR_WITH_INCORRECT_URL",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "type": "default",
+                    "key": "Authorization",
+                    "value": ""
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"_postman_id\":\"toast\",\"name\":\"toast\",\"schema\":\"toast\",\"reference\":\"{{$randomFirstName}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "ids=",
+                  "protocol": "https",
+                  "host": [
+                    "example",
+                    "com"
+                  ],
+                  "path": [
+                    "",
+                    "{{$randomEmail}}",
+                    "seasons",
+                    "{seasonID}",
+                    "days",
+                    "{dayID}",
+                    "skiers",
+                    "{skierID}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{$randomCatchPhrase}}",
+                      "disabled": false
+                    },
+                    {
+                      "key": "ids",
+                      "value": "",
+                      "disabled": false
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tobe400"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "POSITIVE OUTCOME",
+          "request": {
+            "header": [],
+            "body": {
+              "options": {
+                "raw": {}
+              }
+            }
+          },
+          "response": [],
+          "item": [
+            {
+              "name": "VERIFY_ENDPOINT_WITH_VALID_URL",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "type": "default",
+                    "key": "Authorization",
+                    "value": ""
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"_postman_id\":\"toast\",\"name\":\"toast\",\"schema\":\"toast\",\"reference\":\"{{$randomFirstName}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://example.com/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID}?id{{$randomCatchPhrase}}=&ids=",
+                  "protocol": "https",
+                  "host": [
+                    "example",
+                    "com"
+                  ],
+                  "path": [
+                    "",
+                    "{{$randomEmail}}",
+                    "seasons",
+                    "{seasonID}",
+                    "days",
+                    "{dayID}",
+                    "skiers",
+                    "{skierID}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{$randomCatchPhrase}}",
+                      "disabled": false
+                    },
+                    {
+                      "key": "ids",
+                      "value": "",
+                      "disabled": false
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tobe400"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "response": []
+            },
+            {
+              "name": "VERIFY_ENDPOINT_WITH_VALID_PAYLOAD",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "type": "default",
+                    "key": "Authorization",
+                    "value": ""
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"_postman_id\":\"toast\",\"name\":\"toast\",\"schema\":\"toast\",\"reference\":\"{{$randomFirstName}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://example.com/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID}?id{{$randomCatchPhrase}}=&ids=",
+                  "protocol": "https",
+                  "host": [
+                    "example",
+                    "com"
+                  ],
+                  "path": [
+                    "",
+                    "{{$randomEmail}}",
+                    "seasons",
+                    "{seasonID}",
+                    "days",
+                    "{dayID}",
+                    "skiers",
+                    "{skierID}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{$randomCatchPhrase}}",
+                      "disabled": false
+                    },
+                    {
+                      "key": "ids",
+                      "value": "",
+                      "disabled": false
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tobe400"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "response": []
+            },
+            {
+              "name": "VERIFY_ENDPOINT_WITH_VALID_HTTP_CODE",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "type": "default",
+                    "key": "Authorization",
+                    "value": ""
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"_postman_id\":\"toast\",\"name\":\"toast\",\"schema\":\"toast\",\"reference\":\"{{$randomFirstName}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://example.com/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID}?id{{$randomCatchPhrase}}=&ids=",
+                  "protocol": "https",
+                  "host": [
+                    "example",
+                    "com"
+                  ],
+                  "path": [
+                    "",
+                    "{{$randomEmail}}",
+                    "seasons",
+                    "{seasonID}",
+                    "days",
+                    "{dayID}",
+                    "skiers",
+                    "{skierID}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "{{$randomCatchPhrase}}",
+                      "disabled": false
+                    },
+                    {
+                      "key": "ids",
+                      "value": "",
+                      "disabled": false
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "tobe400"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "REQUESTS",
+      "request": {
+        "header": [],
+        "body": {
+          "options": {
+            "raw": {}
+          }
+        }
+      },
+      "response": [],
+      "item": [
+        {
+          "name": "generate",
+          "request": {
+            "auth": {
+              "empty": false,
+              "mapType": "java.util.HashMap"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "type": "default",
+                "key": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"_postman_id\":\"toast\",\"name\":\"toast\",\"schema\":\"toast\",\"reference\":\"{{$randomFirstName}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://example.com/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID}?id{{$randomCatchPhrase}}=&ids=",
+              "protocol": "https",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "",
+                "{{$randomEmail}}",
+                "seasons",
+                "{seasonID}",
+                "days",
+                "{dayID}",
+                "skiers",
+                "{skierID}"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{$randomCatchPhrase}}",
+                  "disabled": false
+                },
+                {
+                  "key": "ids",
+                  "value": "",
+                  "disabled": false
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
