@@ -9,52 +9,63 @@ import com.chocotea.core.annotations.SpringRequest;
 import com.chocotea.tests.TestGenerator;
 import com.chocotea.utility.BeanReader;
 
+import javax.lang.model.element.AnnotationMirror;
+import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.chocotea.bean.postman.Auth.auth;
+import static com.chocotea.bean.postman.Language.json;
 import static com.chocotea.bean.postman.Modes.raw;
 
 public abstract class ControllerReader {
 
     public Item item;
-    private Method method;
+   // private Method method;
     private Collection collection;
     private List<Item> testItems;
     public String baseUrl;
     private boolean createTest;
     private String protocol;
+    private Set<List<? extends AnnotationMirror>> methodAnnotations;
+    private Set<List<? extends  AnnotationMirror>> parameterAnnotations;
     private SpringRequest springRequest;
     private JavaxRequest javaxRequest;
 
 
-    public ControllerReader(Method method, Collection collection, Class<?> clazz, boolean spring, Item item, List<Item> testItems){
+    public ControllerReader(
+            Set<List<? extends AnnotationMirror>> methodAnnotations,
+            Set<List<? extends  AnnotationMirror>> parameterAnnotations,
+                            Collection collection,
+                            Annotation requestAnnotation,
+                            String baseUrl, boolean createTest, String protocol,
+                            boolean spring, Item item, List<Item> testItems){
         this.testItems = testItems;
         this.item = item;
-        this.method = method;
+       this.methodAnnotations = methodAnnotations;
+        this.parameterAnnotations = parameterAnnotations;
         this.collection = collection;
+        this.baseUrl = baseUrl;
+        this.createTest = createTest;
+        this.protocol = protocol;
         if(spring) {
-            this.baseUrl = clazz.getAnnotation(SpringCollection.class).baseUrl();
-            this.createTest = clazz.getAnnotation(SpringCollection.class).createTest();
-            this.protocol = clazz.getAnnotation(SpringCollection.class).protocol();
-            this.springRequest = method.getAnnotation(SpringRequest.class);
+            this.springRequest = (SpringRequest)requestAnnotation;
         }else{
             this.springRequest = null;
-            this.baseUrl = clazz.getAnnotation(JavaxCollection.class).baseUrl();
-            this.createTest = clazz.getAnnotation(JavaxCollection.class).createTest();
-            this.protocol = clazz.getAnnotation(JavaxCollection.class).protocol();
-            this.javaxRequest = method.getAnnotation(JavaxRequest.class);
+            this.javaxRequest = (JavaxRequest)requestAnnotation;
         }
     }
 
     public void read() throws IOException {
 
-        handleMappings(method, item, baseUrl);
+        handleMappings(methodAnnotations, item, baseUrl);
 
         setLanguage();
 
@@ -68,13 +79,13 @@ public abstract class ControllerReader {
         handleBean();
 
         //path parameters
-        handlePathParameters(method, item);
+        handlePathParameters(parameterAnnotations, item);
 
         //query parameters
-        handleQueryParameters(method, item);
+        handleQueryParameters(parameterAnnotations, item);
 
         //header parameters
-        handleHeaderParameters(method, item);
+        handleHeaderParameters(parameterAnnotations, item);
 
         //if class has createTest annotation add test for the constraint
         if(createTest){
@@ -92,15 +103,8 @@ public abstract class ControllerReader {
             item.getRequest().setAuth(auth(javaxRequest.auth(), javaxRequest.authValue()).toString());
         }
 
-        //save item in /resources folder
-        writeToFile();
-
-
     }
 
-    private void writeToFile() throws IOException {
-        Files.write(Paths.get(Objects.requireNonNull(ControllerReader.class.getResource(".")).getFile()+ "/"+method.getName()+".json"), item.toString().getBytes());
-    }
 
     protected void setLanguage(){
         //set language
@@ -127,17 +131,17 @@ public abstract class ControllerReader {
 
     }
 
-    public abstract void handleMappings(Method method, Item item, String baseUrl);
+    public abstract void handleMappings(Set<List<? extends AnnotationMirror>> methodAnnotations, Item item, String baseUrl);
 
     protected void handleProtocol(){
         item.getRequest().getUrl().setProtocol(protocol);
     }
 
-    public abstract void handleHeaderParameters(Method method, Item item);
+    public abstract void handleHeaderParameters(Set<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 
-    public abstract void handleQueryParameters(Method method, Item item);
+    public abstract void handleQueryParameters(Set<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 
-    public abstract void handlePathParameters(Method method, Item item);
+    public abstract void handlePathParameters(Set<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 
     private void handleTests() throws ClassNotFoundException {
         //call generate tests
@@ -151,6 +155,10 @@ public abstract class ControllerReader {
     private void handleBean() {
         if (springRequest != null) {
             if (springRequest.request() != DefaultClass.class) {
+//                if(springRequest.language() != json){
+//                    //if test generate dummy text?
+//
+//                }
                 item.getRequest().getBody().setMode(raw.name());
                 item.getRequest().getBody().setRaw(BeanReader.toString(springRequest.request().getName()));
             }

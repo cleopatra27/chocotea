@@ -2,6 +2,7 @@ package com.chocotea.utility;
 
 import com.chocotea.bean.postman.Auth;
 import com.chocotea.bean.postman.DynamicVariables;
+import com.chocotea.bean.postman.Language;
 import com.chocotea.bean.testRequest;
 import com.chocotea.bean.testResponse;
 import com.chocotea.core.annotations.ChocoRandom;
@@ -39,4 +40,10 @@ public class PathGenerator {
     public String ootherQ(@RequestParam( "dayID" ) @NotNull @Min(1) @Max(1) int dayID){
         return null;
     }
+
+//    @GetMapping(value = "/data")
+//    @SpringRequest(auth = Auth.Type.bearer, authValue = "ABCTOKEN", language = Language.text, request = String.class)
+//    public String encodedtest(String name){
+//        return null;
+//    }
 }

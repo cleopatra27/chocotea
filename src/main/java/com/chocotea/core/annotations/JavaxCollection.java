@@ -4,7 +4,7 @@ package com.chocotea.core.annotations;
 import java.lang.annotation.*;
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Inherited
 public @interface JavaxCollection {
 

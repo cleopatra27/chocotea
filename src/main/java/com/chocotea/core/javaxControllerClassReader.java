@@ -2,36 +2,36 @@
 //
 //import com.chocotea.bean.postman.*;
 //import com.chocotea.core.annotations.ChocoRandom;
-//import jakarta.ws.rs.HeaderParam;
-//import jakarta.ws.rs.PathParam;
-//import jakarta.ws.rs.QueryParam;
+//import javax.ws.rs.HeaderParam;
+//import javax.ws.rs.PathParam;
+//import javax.ws.rs.QueryParam;
+//
 //import java.lang.reflect.Method;
 //import java.util.Arrays;
 //import java.util.List;
 //import java.util.concurrent.atomic.AtomicReference;
 //
 //import static com.chocotea.bean.HTTPVerbs.*;
-//import static com.chocotea.bean.HTTPVerbs.DELETE;
 //
-//public class jakartaControllerClassReader extends ControllerReader {
+//public class javaxControllerClassReader extends ControllerReader {
 //
-//    public jakartaControllerClassReader(Method method, Collection collection, Class<?> clazz, Item requestFolder, List<Item> testItems) {
+//    public javaxControllerClassReader(Method method, Collection collection, Class<?> clazz, Item requestFolder, List<Item> testItems) {
 //        super(method, collection, clazz, false, requestFolder, testItems);
 //    }
 //
 //    @Override
 //    public void handleMappings(Method method, Item item, String baseUrl) {
 //        System.out.println(Arrays.toString(method.getDeclaredAnnotations()));
-//        if (method.isAnnotationPresent(jakarta.ws.rs.POST.class)) {
+//        if (method.isAnnotationPresent(javax.ws.rs.POST.class)) {
 //            //set method
 //            item.getRequest().setMethod(POST);
-//        } else if (method.isAnnotationPresent(jakarta.ws.rs.GET.class)) {
+//        } else if (method.isAnnotationPresent(javax.ws.rs.GET.class)) {
 //            //set method
 //            item.getRequest().setMethod(GET);
-//        } else if (method.isAnnotationPresent(jakarta.ws.rs.PUT.class)) {
+//        } else if (method.isAnnotationPresent(javax.ws.rs.PUT.class)) {
 //            //set method
 //            item.getRequest().setMethod(PUT);
-//        } else if (method.isAnnotationPresent(jakarta.ws.rs.DELETE.class)) {
+//        } else if (method.isAnnotationPresent(javax.ws.rs.DELETE.class)) {
 //            //set method
 //            item.getRequest().setMethod(DELETE);
 //        }else{
@@ -39,11 +39,11 @@
 //        }
 //
 //        //add url
-//        item.getRequest().setUrl(new Url(baseUrl + method.getAnnotation(jakarta.ws.rs.Path.class).value()));
+//        item.getRequest().setUrl(new Url(baseUrl + method.getAnnotation(javax.ws.rs.Path.class).value()));
 //
 //        //add paths
 //        item.getRequest().getUrl().getPath().addAll(
-//                List.of(method.getAnnotation(jakarta.ws.rs.Path.class).value().split("/"))
+//                List.of(method.getAnnotation(javax.ws.rs.Path.class).value().split("/"))
 //        );
 //
 //    }

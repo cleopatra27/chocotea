@@ -13,7 +13,7 @@ import static com.chocotea.bean.postman.Auth.Type.noauth;
 import static com.chocotea.bean.postman.Language.json;
 
 @Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface SpringRequest {
 
     //TODO; set default to method name

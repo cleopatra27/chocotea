@@ -7,6 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <processorPath useProcessorModulePath="true">
+          <entry name="$PROJECT_DIR$/../JavaToPostman/target/JavaToPostman-1.0-SNAPSHOT.jar" />
+        </processorPath>
         <module name="JavaToPostman" />
       </profile>
     </annotationProcessing>

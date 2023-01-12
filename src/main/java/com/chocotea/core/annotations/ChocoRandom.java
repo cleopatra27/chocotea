@@ -12,7 +12,7 @@ import static com.chocotea.bean.postman.DynamicVariables.none;
  * The field type is used to generate this.
  */
 @Target({ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Inherited
 public @interface ChocoRandom {
     DynamicVariables dynamic() default none;
