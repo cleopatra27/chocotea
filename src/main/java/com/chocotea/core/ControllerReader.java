@@ -34,15 +34,15 @@ public abstract class ControllerReader {
     public String baseUrl;
     private boolean createTest;
     private String protocol;
-    private Set<List<? extends AnnotationMirror>> methodAnnotations;
-    private Set<List<? extends  AnnotationMirror>> parameterAnnotations;
+    private List<? extends AnnotationMirror> methodAnnotations;
+    private List<List<? extends  AnnotationMirror>> parameterAnnotations;
     private SpringRequest springRequest;
     private JavaxRequest javaxRequest;
 
 
     public ControllerReader(
-            Set<List<? extends AnnotationMirror>> methodAnnotations,
-            Set<List<? extends  AnnotationMirror>> parameterAnnotations,
+            List<? extends AnnotationMirror> methodAnnotations,
+            List<List<? extends  AnnotationMirror>> parameterAnnotations,
                             Collection collection,
                             Annotation requestAnnotation,
                             String baseUrl, boolean createTest, String protocol,
@@ -131,17 +131,17 @@ public abstract class ControllerReader {
 
     }
 
-    public abstract void handleMappings(Set<List<? extends AnnotationMirror>> methodAnnotations, Item item, String baseUrl);
+    public abstract void handleMappings(List<? extends AnnotationMirror> methodAnnotations, Item item, String baseUrl);
 
     protected void handleProtocol(){
         item.getRequest().getUrl().setProtocol(protocol);
     }
 
-    public abstract void handleHeaderParameters(Set<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
+    public abstract void handleHeaderParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 
-    public abstract void handleQueryParameters(Set<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
+    public abstract void handleQueryParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 
-    public abstract void handlePathParameters(Set<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
+    public abstract void handlePathParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 
     private void handleTests() throws ClassNotFoundException {
         //call generate tests
