@@ -2,34 +2,23 @@ package com.chocotea.core;
 
 import com.chocotea.bean.postman.Collection;
 import com.chocotea.bean.postman.Item;
-import com.chocotea.core.annotations.JavaxCollection;
 import com.chocotea.core.annotations.JavaxRequest;
-import com.chocotea.core.annotations.SpringCollection;
 import com.chocotea.core.annotations.SpringRequest;
 import com.chocotea.tests.TestGenerator;
 import com.chocotea.utility.BeanReader;
 
 import javax.lang.model.element.AnnotationMirror;
-import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 import static com.chocotea.bean.postman.Auth.auth;
-import static com.chocotea.bean.postman.Language.json;
 import static com.chocotea.bean.postman.Modes.raw;
 
 public abstract class ControllerReader {
 
     public Item item;
-   // private Method method;
-    private Collection collection;
+
     private List<Item> testItems;
     public String baseUrl;
     private boolean createTest;
@@ -43,7 +32,6 @@ public abstract class ControllerReader {
     public ControllerReader(
             List<? extends AnnotationMirror> methodAnnotations,
             List<List<? extends  AnnotationMirror>> parameterAnnotations,
-                            Collection collection,
                             Annotation requestAnnotation,
                             String baseUrl, boolean createTest, String protocol,
                             boolean spring, Item item, List<Item> testItems){
@@ -51,7 +39,6 @@ public abstract class ControllerReader {
         this.item = item;
        this.methodAnnotations = methodAnnotations;
         this.parameterAnnotations = parameterAnnotations;
-        this.collection = collection;
         this.baseUrl = baseUrl;
         this.createTest = createTest;
         this.protocol = protocol;

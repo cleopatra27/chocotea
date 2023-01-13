@@ -18,10 +18,10 @@ public class SpringControllerClassReader extends ControllerReader {
     public SpringControllerClassReader(
             List<? extends AnnotationMirror> methodAnnotations,
             List<List<? extends AnnotationMirror>> parameterAnnotations,
-            Collection collection, Annotation requestAnnotation, String baseUrl,
+            Annotation requestAnnotation, String baseUrl,
             boolean createTest, String protocol, Item item, List<Item> testItems) {
 
-        super(methodAnnotations, parameterAnnotations, collection, requestAnnotation, baseUrl, createTest,
+        super(methodAnnotations, parameterAnnotations, requestAnnotation, baseUrl, createTest,
                 protocol, true, item, testItems);
 
     }

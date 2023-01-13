@@ -91,7 +91,6 @@ public class CollectionProcessor extends AbstractProcessor {
             new SpringControllerClassReader(
                     methodAnnotations,
                     parameterAnnotations,
-                    collection,
                     requestAnnotation,
                     baseUrl,
                     test,
