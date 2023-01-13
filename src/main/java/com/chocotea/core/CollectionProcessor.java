@@ -2,6 +2,8 @@ package com.chocotea.core;
 
 import com.chocotea.bean.postman.Collection;
 import com.chocotea.bean.postman.Item;
+import com.chocotea.core.annotations.ChocoExpect;
+import com.chocotea.core.annotations.ChocoRandom;
 import com.chocotea.core.annotations.SpringCollection;
 import com.chocotea.core.annotations.SpringRequest;
 import com.google.auto.service.AutoService;
@@ -9,10 +11,13 @@ import com.google.auto.service.AutoService;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.MirroredTypeException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -71,7 +76,36 @@ public class CollectionProcessor extends AbstractProcessor {
         Annotation requestAnnotation = null;
         for (Element annosation : roundEnv.getElementsAnnotatedWith(SpringRequest.class)) {
             requestAnnotation = annosation.getAnnotation(SpringRequest.class);
-            this.item = new Item(((SpringRequest)requestAnnotation).name());
+
+            this.item = new Item(((SpringRequest) requestAnnotation).name());
+
+//            try
+//            {
+//                System.out.println("class =" +((SpringRequest) requestAnnotation).request());
+//            }
+//            catch( MirroredTypeException mte ){
+//                System.out.println("class =" +mte.getTypeMirror());
+//
+//                if (mte.getTypeMirror() instanceof DeclaredType) {
+//                    if (((DeclaredType) mte.getTypeMirror()).asElement() instanceof TypeElement) {
+//                        System.out.println(((TypeElement) ((DeclaredType) mte.getTypeMirror())
+//                                .asElement()).getEnclosedElements());
+//
+//                        (((DeclaredType) mte.getTypeMirror()).asElement()).getEnclosedElements().forEach(element -> {
+////                            System.out.println("type -" + element.asType());
+////                            System.out.println("is prim -" + element.asType().getKind().isPrimitive());
+////                            System.out.println("type annots -" + element.getAnnotationMirrors());
+////                            System.out.println("expect -?? " + Arrays.toString(element.getAnnotationsByType(ChocoRandom.class)));
+//                            if(element.getAnnotation(ChocoRandom.class) != null){
+//                                System.out.println("expect -?? " + element.getAnnotation(ChocoRandom.class));
+//                                System.out.println("expect -?? " + element.getAnnotation(ChocoRandom.class).dynamic());
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+
+
 
             methodAnnotations = annosation.getAnnotationMirrors();
 
@@ -80,39 +114,39 @@ public class CollectionProcessor extends AbstractProcessor {
                     parameterAnnotations.add(variableElement.getAnnotationMirrors());
                 }
             }
+
+
+            if (test) {
+                this.subTestFolder = new Item(name);
+                testItems = new ArrayList<>();
+            }
+
+            try {
+                new SpringControllerClassReader(
+                        methodAnnotations,
+                        parameterAnnotations,
+                        requestAnnotation,
+                        baseUrl,
+                        test,
+                        protocol,
+                        this.item,
+                        testItems).read();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            requestFolder.getItem().add(item);
+
+            if (test) {
+                subTestFolder.setItem(testItems);
+                testFolder.getItem().add(subTestFolder);
+            } else {
+                this.testFolder = null;
+            }
         }
-
-        if(test){
-            this.subTestFolder = new Item(name);
-            testItems = new ArrayList<>();
-        }
-
-        try {
-            new SpringControllerClassReader(
-                    methodAnnotations,
-                    parameterAnnotations,
-                    requestAnnotation,
-                    baseUrl,
-                    test,
-                    protocol,
-                    this.item,
-                    testItems).read();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        requestFolder.getItem().add(item);
-
-        if (test) {
-            subTestFolder.setItem(testItems);
-            testFolder.getItem().add(subTestFolder);
-        } else {
-            this.testFolder = null;
-        }
-
         collection.getItem().add(requestFolder);
         collection.getItem().add(this.testFolder);
-        System.out.println(collection.toString());
+        //System.out.println(collection.toString());
 
         //save item in /resources folder
         //  writeToFile();

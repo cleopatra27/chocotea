@@ -5,8 +5,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.chocotea.bean.postman.DynamicVariables;
 import com.chocotea.core.annotations.ChocoRandom;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -16,41 +24,49 @@ import static com.chocotea.utility.RandomGenerator.stringGenerator;
 
 public class BeanReader {
 
-    public static String toString(String val) {
+    public static String generate(TypeMirror typeMirror){
 
-        String value;
+        AtomicReference<String> value = new AtomicReference<>();
         AtomicBoolean generateRandom = new AtomicBoolean(false);
         AtomicReference<DynamicVariables> variable = new AtomicReference<>();
-        try {
-            Object vd = Class.forName(val).newInstance();
-            for(Field field : vd.getClass().getDeclaredFields()){
 
-                Arrays.stream(field.getDeclaredAnnotations()).forEach(annotation -> {
-                    if(annotation.annotationType().equals(ChocoRandom.class)){
+        TypeSpec.Builder tempClass = TypeSpec.classBuilder("Temp")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .build().toBuilder();
+
+        JavaFile javaFile = JavaFile.builder(typeMirror.toString(), tempClass.build())
+                .build();
+
+        if (typeMirror instanceof DeclaredType) {
+            if (((DeclaredType) typeMirror).asElement() instanceof TypeElement) {
+
+                //loop through fields
+                (((DeclaredType) typeMirror).asElement()).getEnclosedElements().stream().skip(1).forEach(element -> {
+
+                    if(element.getAnnotation(ChocoRandom.class) != null){
                         generateRandom.set(true);
-                        variable.set(field.getAnnotation(ChocoRandom.class).dynamic());
-                        }
-                    });
+                        variable.set(element.getAnnotation(ChocoRandom.class).dynamic());
+                    }
 
-                field.setAccessible(true);
+                    tempClass.addField(TypeName.get(element.asType()),
+                            element.getSimpleName().toString(),
+                            Modifier.PRIVATE);
 
-                if(field.getType().equals(String.class)){
-                    field.set(vd, stringGenerator(generateRandom.get(), variable.get()));
-                }
-                else if(field.getType().equals(Integer.class)){
-                    field.set(vd, integerGenerator(generateRandom.get(), variable.get()));
-                }
+                    //TODO: if inner class
+
+                });
             }
+        }
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            value = objectMapper.writeValueAsString(vd);
-        } catch (InstantiationException | IllegalAccessException
-                 | ClassNotFoundException | JsonProcessingException e) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        try {
+            value.set(objectMapper.writeValueAsString(javaFile));
+        } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return value;
-
+        return value.get();
     }
+
 
 }

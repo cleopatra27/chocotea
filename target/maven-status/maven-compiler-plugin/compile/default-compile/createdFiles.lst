@@ -55,6 +55,7 @@ com/chocotea/core/annotations/ChocoExpect.class
 com/chocotea/bean/SpringAnnotationMappings.class
 com/chocotea/bean/postman/Options.class
 com/chocotea/bean/postman/Language.class
+com/chocotea/utility/GetIClass.class
 com/chocotea/bean/tests/MixedTests.class
 com/chocotea/bean/Library.class
 com/chocotea/utility/Properties.class

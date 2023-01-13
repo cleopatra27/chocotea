@@ -8,6 +8,9 @@ import com.chocotea.tests.TestGenerator;
 import com.chocotea.utility.BeanReader;
 
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -133,27 +136,47 @@ public abstract class ControllerReader {
     private void handleTests() throws ClassNotFoundException {
         //call generate tests
         if(springRequest != null) {
-            new TestGenerator(testItems).generateTests(springRequest.request().getName(), item, "test");
+            try
+            {
+                System.out.println("class =" +springRequest.request());
+            }
+            catch( MirroredTypeException mte ) {
+                new TestGenerator(testItems).generateTests(mte.getTypeMirror().toString(), item, "test");
+            }
+
         }else{
             new TestGenerator(testItems).generateTests(javaxRequest.requestBean().getName(), item, "test");
         }
     }
 
     private void handleBean() {
+        //TODO get class using java.lang.model
         if (springRequest != null) {
-            if (springRequest.request() != DefaultClass.class) {
-//                if(springRequest.language() != json){
-//                    //if test generate dummy text?
-//
-//                }
-                item.getRequest().getBody().setMode(raw.name());
-                item.getRequest().getBody().setRaw(BeanReader.toString(springRequest.request().getName()));
+
+            try
+            {
+                System.out.println("class =" +springRequest.request());
             }
-        } else {
-            if (javaxRequest.requestBean() != DefaultClass.class) {
+            catch( MirroredTypeException mte ) {
                 item.getRequest().getBody().setMode(raw.name());
-                item.getRequest().getBody().setRaw(BeanReader.toString(javaxRequest.requestBean().getName()));
+                item.getRequest().getBody().setRaw(BeanReader.generate(mte.getTypeMirror()));
             }
+
+//            //TODO: get request class using java lang
+//            if (springRequest.request() != DefaultClass.class) {
+////                if(springRequest.language() != json){
+////                    //if test generate dummy text?
+////
+////                }
+//                item.getRequest().getBody().setMode(raw.name());
+////                item.getRequest().getBody().setRaw(BeanReader.toString(springRequest.request().getName()));
+//                item.getRequest().getBody().setRaw(BeanReader.generate(springRequest.request().getName()));
+//            }
+//        } else {
+//            if (javaxRequest.requestBean() != DefaultClass.class) {
+//                item.getRequest().getBody().setMode(raw.name());
+//                item.getRequest().getBody().setRaw(BeanReader.toString(javaxRequest.requestBean().getName()));
+//            }
         }
     }
 }
