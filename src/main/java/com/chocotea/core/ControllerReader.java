@@ -1,6 +1,5 @@
 package com.chocotea.core;
 
-import com.chocotea.bean.postman.Collection;
 import com.chocotea.bean.postman.Item;
 import com.chocotea.core.annotations.JavaxRequest;
 import com.chocotea.core.annotations.SpringRequest;
@@ -8,9 +7,7 @@ import com.chocotea.tests.TestGenerator;
 import com.chocotea.utility.BeanReader;
 
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
-import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;

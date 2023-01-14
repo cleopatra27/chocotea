@@ -1,21 +1,15 @@
 com/chocotea/tests/TestGenerator.class
-com/chocotea/utility/JavaxPathGenerator 2.class
 com/chocotea/core/annotations/SpringCollection.class
 com/chocotea/core/annotations/JavaxCollection.class
 com/chocotea/bean/tests/NegativeTests.class
 com/chocotea/core/CollectionProcessor.class
 com/chocotea/tests/MixedTests.class
-com/chocotea/core/annotations/JavaxCollection 2.class
 com/chocotea/bean/postman/Header.class
 com/chocotea/core/SpringControllerClassReader.class
-com/chocotea/core/annotations/ChocoRandom 2.class
 com/chocotea/core/annotations/ChocoResponseTest.class
 com/chocotea/utility/RandomGenerator.class
 com/chocotea/tests/GeneralTests.class
-com/chocotea/core/DefaultClass 2.class
 com/chocotea/postman/Test.class
-com/chocotea/postman/Test 2.class
-com/chocotea/utility/Properties 2.class
 com/chocotea/bean/postman/Query.class
 com/chocotea/core/annotations/SpringRequest.class
 com/chocotea/bean/postman/Url.class
@@ -31,23 +25,17 @@ com/chocotea/bean/postman/Auth$Type.class
 com/chocotea/core/annotations/ChocoRandom.class
 com/chocotea/bean/tests/PositiveTests.class
 com/chocotea/tests/Tests.class
-com/chocotea/core/annotations/ChocoDuplicateTest 2.class
 com/chocotea/core/annotations/ChocoCurrencyTest.class
-com/chocotea/tests/DuplicateCheck 2.class
 com/chocotea/core/annotations/JavaxRequest.class
 com/chocotea/bean/postman/Collection.class
-com/chocotea/bean/postman/DynamicVariables 2.class
 com/chocotea/bean/HTTPVerbs.class
 META-INF/services/javax.annotation.processing.Processor
-com/chocotea/bean/tests/SpecialzedTests/DuplicateTest 2.class
 com/chocotea/postman/Cookies.class
 com/chocotea/utility/JavaxPathGenerator.class
 com/chocotea/core/annotations/ChocoDuplicateTest.class
-com/chocotea/bean/tests/MixedTests 2.class
 com/chocotea/bean/postman/Event.class
 com/chocotea/tests/IntegerTests.class
 com/chocotea/tests/DuplicateCheck.class
-com/chocotea/utility/GetIClass 2.class
 com/chocotea/bean/postman/Request.class
 com/chocotea/core/DefaultClass.class
 com/chocotea/bean/postman/DynamicVariables.class
@@ -56,27 +44,18 @@ com/chocotea/tests/DecimalTests$Tests.class
 com/chocotea/bean/tests/SpecialzedTests/CurrencyTest.class
 com/chocotea/bean/postman/Auth$1.class
 com/chocotea/utility/BeanReader.class
-com/chocotea/bean/tests/PositiveTests 2.class
 com/chocotea/tests/StringTests.class
 com/chocotea/core/ControllerReader.class
 com/chocotea/bean/postman/Raw.class
-com/chocotea/utility/BeanReader 2.class
 com/chocotea/bean/postman/Body.class
 com/chocotea/bean/testRequest.class
 com/chocotea/bean/postman/Modes.class
 com/chocotea/bean/postman/Script.class
 com/chocotea/core/annotations/ChocoExpect.class
 com/chocotea/bean/SpringAnnotationMappings.class
-com/chocotea/bean/tests/NegativeTests 2.class
 com/chocotea/bean/postman/Options.class
-com/chocotea/core/annotations/ChocoExpect 2.class
 com/chocotea/bean/postman/Language.class
-com/chocotea/bean/SpringAnnotationMappings 2.class
-com/chocotea/bean/tests/SpecialzedTests/CurrencyTest 2.class
-META-INF/services/javax.annotation.processing 2.Processor
 com/chocotea/utility/GetIClass.class
 com/chocotea/bean/tests/MixedTests.class
 com/chocotea/bean/Library.class
-com/chocotea/bean/testResponse 2.class
-com/chocotea/core/SpringControllerClassReader 2.class
 com/chocotea/utility/Properties.class

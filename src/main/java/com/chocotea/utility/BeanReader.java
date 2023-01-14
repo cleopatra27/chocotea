@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.chocotea.bean.postman.DynamicVariables;
 import com.chocotea.core.annotations.ChocoRandom;
+import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -34,8 +35,6 @@ public class BeanReader {
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .build().toBuilder();
 
-        JavaFile javaFile = JavaFile.builder(typeMirror.toString(), tempClass.build())
-                .build();
 
         if (typeMirror instanceof DeclaredType) {
             if (((DeclaredType) typeMirror).asElement() instanceof TypeElement) {
@@ -48,9 +47,12 @@ public class BeanReader {
                         variable.set(element.getAnnotation(ChocoRandom.class).dynamic());
                     }
 
-                    tempClass.addField(TypeName.get(element.asType()),
-                            element.getSimpleName().toString(),
-                            Modifier.PRIVATE);
+                    tempClass.addField(FieldSpec
+                            .builder(TypeName.get(element.asType()),  element.getSimpleName().toString())
+                            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+                            //TODO  switch between generators
+                            .initializer("$S",stringGenerator(generateRandom.get(), variable.get()))
+                            .build());
 
                     //TODO: if inner class
 
@@ -58,10 +60,15 @@ public class BeanReader {
             }
         }
 
+//        JavaFile javaFile = JavaFile.builder(typeMirror.toString(), tempClass.build())
+//                .build();
+        System.out.println("javaFile --> " + tempClass);
+        System.out.println("javaFile --> " + tempClass.build());
+        System.out.println("javaFile --> " + tempClass.build().getClass());
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         try {
-            value.set(objectMapper.writeValueAsString(javaFile));
+            value.set(objectMapper.writeValueAsString(tempClass.build()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

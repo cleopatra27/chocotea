@@ -1,8 +1,6 @@
 package com.chocotea.core;
 
 import com.chocotea.bean.postman.*;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
