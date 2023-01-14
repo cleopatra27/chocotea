@@ -9,6 +9,7 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import org.json.JSONObject;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -27,14 +28,9 @@ public class BeanReader {
 
     public static String generate(TypeMirror typeMirror){
 
-        AtomicReference<String> value = new AtomicReference<>();
         AtomicBoolean generateRandom = new AtomicBoolean(false);
         AtomicReference<DynamicVariables> variable = new AtomicReference<>();
-
-        TypeSpec.Builder tempClass = TypeSpec.classBuilder("Temp")
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .build().toBuilder();
-
+        JSONObject bod = new JSONObject();
 
         if (typeMirror instanceof DeclaredType) {
             if (((DeclaredType) typeMirror).asElement() instanceof TypeElement) {
@@ -47,12 +43,8 @@ public class BeanReader {
                         variable.set(element.getAnnotation(ChocoRandom.class).dynamic());
                     }
 
-                    tempClass.addField(FieldSpec
-                            .builder(TypeName.get(element.asType()),  element.getSimpleName().toString())
-                            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-                            //TODO  switch between generators
-                            .initializer("$S",stringGenerator(generateRandom.get(), variable.get()))
-                            .build());
+                    //TODO  switch between generators
+                    bod.put(element.getSimpleName().toString(), stringGenerator(generateRandom.get(), variable.get()));
 
                     //TODO: if inner class
 
@@ -60,19 +52,8 @@ public class BeanReader {
             }
         }
 
-//        JavaFile javaFile = JavaFile.builder(typeMirror.toString(), tempClass.build())
-//                .build();
-        System.out.println("javaFile --> " + tempClass);
-        System.out.println("javaFile --> " + tempClass.build());
-        System.out.println("javaFile --> " + tempClass.build().getClass());
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        try {
-            value.set(objectMapper.writeValueAsString(tempClass.build()));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        return value.get();
+
+        return bod.toString();
     }
 
 

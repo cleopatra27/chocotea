@@ -39,12 +39,12 @@ public class CollectionProcessor extends AbstractProcessor {
             String protocol = null;
             boolean test = false;
             String name = null;
-            Set<? extends Element> annotatedElement = roundEnv.getElementsAnnotatedWith(SpringCollection.class);
-            for (Element annosation : annotatedElement) {
-                baseUrl = annosation.getAnnotation(SpringCollection.class).name();
-                name = annosation.getAnnotation(SpringCollection.class).name();
-                test = annosation.getAnnotation(SpringCollection.class).createTest();
-                protocol = annosation.getAnnotation(SpringCollection.class).protocol();
+            Set<? extends Element> annotatedClasses = roundEnv.getElementsAnnotatedWith(SpringCollection.class);
+            for (Element annotatedClass : annotatedClasses) {
+                baseUrl = annotatedClass.getAnnotation(SpringCollection.class).name();
+                name = annotatedClass.getAnnotation(SpringCollection.class).name();
+                test = annotatedClass.getAnnotation(SpringCollection.class).createTest();
+                protocol = annotatedClass.getAnnotation(SpringCollection.class).protocol();
             }
 
             collection = new com.chocotea.bean.postman.Collection(name);
@@ -52,8 +52,8 @@ public class CollectionProcessor extends AbstractProcessor {
             List<? extends AnnotationMirror> methodAnnotations;
             List<List<? extends AnnotationMirror>> parameterAnnotations = new ArrayList<>();
             Annotation requestAnnotation;
-            for (Element annosation : roundEnv.getElementsAnnotatedWith(SpringRequest.class)) {
-                requestAnnotation = annosation.getAnnotation(SpringRequest.class);
+            for (Element myAnnotationMethods : roundEnv.getElementsAnnotatedWith(SpringRequest.class)) {
+                requestAnnotation = myAnnotationMethods.getAnnotation(SpringRequest.class);
 
                 this.item = new Item(((SpringRequest) requestAnnotation).name());
 
@@ -84,10 +84,10 @@ public class CollectionProcessor extends AbstractProcessor {
 //            }
 
 
-                methodAnnotations = annosation.getAnnotationMirrors();
+                methodAnnotations = myAnnotationMethods.getAnnotationMirrors();
 
-                if (annosation.getKind() == ElementKind.METHOD) {
-                    for (VariableElement variableElement : ((ExecutableElement) annosation).getParameters()) {
+                if (myAnnotationMethods.getKind() == ElementKind.METHOD) {
+                    for (VariableElement variableElement : ((ExecutableElement) myAnnotationMethods).getParameters()) {
                         parameterAnnotations.add(variableElement.getAnnotationMirrors());
                     }
                 }
@@ -123,8 +123,7 @@ public class CollectionProcessor extends AbstractProcessor {
             }
             collection.getItem().add(requestFolder);
         collection.getItem().add(this.testFolder);
-            System.out.println(collection.toString());
-
+        
             //save item in /resources folder
             try {
                 Writer writer = processingEnv.getFiler().createResource(
