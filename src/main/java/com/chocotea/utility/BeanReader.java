@@ -37,17 +37,18 @@ public class BeanReader {
 
                 //loop through fields
                 (((DeclaredType) typeMirror).asElement()).getEnclosedElements().stream().skip(1).forEach(element -> {
+                    if(element.getKind().isVariable()) {
+                        if (element.getAnnotation(ChocoRandom.class) != null) {
+                            generateRandom.set(true);
+                            variable.set(element.getAnnotation(ChocoRandom.class).dynamic());
+                        }
 
-                    if(element.getAnnotation(ChocoRandom.class) != null){
-                        generateRandom.set(true);
-                        variable.set(element.getAnnotation(ChocoRandom.class).dynamic());
+                        //TODO  switch between generators
+                        bod.put(element.getSimpleName().toString(), stringGenerator(generateRandom.get(), variable.get()));
+
+                        //TODO: if inner class
+
                     }
-
-                    //TODO  switch between generators
-                    bod.put(element.getSimpleName().toString(), stringGenerator(generateRandom.get(), variable.get()));
-
-                    //TODO: if inner class
-
                 });
             }
         }

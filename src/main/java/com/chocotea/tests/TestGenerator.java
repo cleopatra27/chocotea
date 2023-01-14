@@ -4,6 +4,8 @@ import com.chocotea.bean.postman.Collection;
 import com.chocotea.bean.postman.Event;
 import com.chocotea.bean.postman.Item;
 
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
 public class TestGenerator {
@@ -29,9 +31,9 @@ public class TestGenerator {
         this.mixed = new Item("MIXED OUTCOME");
     }
 
-    public void generateTests(String val, Item item, String methodName) throws ClassNotFoundException {
+    public void generateTests(TypeMirror typeMirror, Item item, String methodName) throws ClassNotFoundException {
         //Request body tests
-        generateRequestBodyTests(val, item,  methodName);
+        generateRequestBodyTests(typeMirror, item,  methodName);
 
         //path tests
         generateRequestPathTests(item);
@@ -52,15 +54,15 @@ public class TestGenerator {
 
     }
 
-    public void generateRequestBodyTests(String val, Item item, String methodName) throws ClassNotFoundException {
+    public void generateRequestBodyTests(TypeMirror typeMirror, Item item, String methodName) throws ClassNotFoundException {
 
         //TODO: header test
         //TODO: query params test
         //string type tests
         new StringTests().performMixedTests(
-                Class.forName(val).getDeclaredFields(), mixedItems, item
+                (((DeclaredType) typeMirror).asElement()).getEnclosedElements(), mixedItems, item
         );
-        new StringTests().performNegativeTests(Class.forName(val).getDeclaredFields(), negativeItems, item);
+       // new StringTests().performNegativeTests(Class.forName(val).getDeclaredFields(), negativeItems, item);
 
         //integer type tests
 

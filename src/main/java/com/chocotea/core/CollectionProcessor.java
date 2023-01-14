@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 //@SupportedAnnotationTypes({"com.chocotea.core.annotations.SpringCollection",
@@ -52,49 +53,24 @@ public class CollectionProcessor extends AbstractProcessor {
             List<? extends AnnotationMirror> methodAnnotations;
             List<List<? extends AnnotationMirror>> parameterAnnotations = new ArrayList<>();
             Annotation requestAnnotation;
-            for (Element myAnnotationMethods : roundEnv.getElementsAnnotatedWith(SpringRequest.class)) {
-                requestAnnotation = myAnnotationMethods.getAnnotation(SpringRequest.class);
+            for (Element myAnnotationMethod : roundEnv.getElementsAnnotatedWith(SpringRequest.class)) {
+                requestAnnotation = myAnnotationMethod.getAnnotation(SpringRequest.class);
 
-                this.item = new Item(((SpringRequest) requestAnnotation).name());
+                this.item = new Item(!Objects.equals(((SpringRequest) requestAnnotation).name(), "Sample Request") ?
+                        ((SpringRequest) requestAnnotation).name() :
+                        myAnnotationMethod.getSimpleName().toString());
 
-//            try
-//            {
-//                System.out.println("class =" +((SpringRequest) requestAnnotation).request());
-//            }
-//            catch( MirroredTypeException mte ){
-//                System.out.println("class =" +mte.getTypeMirror());
-//
-//                if (mte.getTypeMirror() instanceof DeclaredType) {
-//                    if (((DeclaredType) mte.getTypeMirror()).asElement() instanceof TypeElement) {
-//                        System.out.println(((TypeElement) ((DeclaredType) mte.getTypeMirror())
-//                                .asElement()).getEnclosedElements());
-//
-//                        (((DeclaredType) mte.getTypeMirror()).asElement()).getEnclosedElements().forEach(element -> {
-////                            System.out.println("type -" + element.asType());
-////                            System.out.println("is prim -" + element.asType().getKind().isPrimitive());
-////                            System.out.println("type annots -" + element.getAnnotationMirrors());
-////                            System.out.println("expect -?? " + Arrays.toString(element.getAnnotationsByType(ChocoRandom.class)));
-//                            if(element.getAnnotation(ChocoRandom.class) != null){
-//                                System.out.println("expect -?? " + element.getAnnotation(ChocoRandom.class));
-//                                System.out.println("expect -?? " + element.getAnnotation(ChocoRandom.class).dynamic());
-//                            }
-//                        });
-//                    }
-//                }
-//            }
+                methodAnnotations = myAnnotationMethod.getAnnotationMirrors();
 
-
-                methodAnnotations = myAnnotationMethods.getAnnotationMirrors();
-
-                if (myAnnotationMethods.getKind() == ElementKind.METHOD) {
-                    for (VariableElement variableElement : ((ExecutableElement) myAnnotationMethods).getParameters()) {
+                if (myAnnotationMethod.getKind() == ElementKind.METHOD) {
+                    for (VariableElement variableElement : ((ExecutableElement) myAnnotationMethod).getParameters()) {
                         parameterAnnotations.add(variableElement.getAnnotationMirrors());
                     }
                 }
 
 
                 if (test) {
-                    this.subTestFolder = new Item(name);
+                    this.subTestFolder = new Item(myAnnotationMethod.getSimpleName().toString());
                     testItems = new ArrayList<>();
                 }
 

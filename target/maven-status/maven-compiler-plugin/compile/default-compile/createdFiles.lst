@@ -20,7 +20,6 @@ com/chocotea/bean/postman/Auth$Data.class
 com/chocotea/bean/tests/SpecialzedTests/DuplicateTest.class
 com/chocotea/bean/postman/Info.class
 com/chocotea/postman/Environment.class
-com/chocotea/utility/PathGenerator.class
 com/chocotea/bean/postman/Auth$Type.class
 com/chocotea/core/annotations/ChocoRandom.class
 com/chocotea/bean/tests/PositiveTests.class
@@ -31,13 +30,11 @@ com/chocotea/bean/postman/Collection.class
 com/chocotea/bean/HTTPVerbs.class
 META-INF/services/javax.annotation.processing.Processor
 com/chocotea/postman/Cookies.class
-com/chocotea/utility/JavaxPathGenerator.class
 com/chocotea/core/annotations/ChocoDuplicateTest.class
 com/chocotea/bean/postman/Event.class
 com/chocotea/tests/IntegerTests.class
 com/chocotea/tests/DuplicateCheck.class
 com/chocotea/bean/postman/Request.class
-com/chocotea/core/DefaultClass.class
 com/chocotea/bean/postman/DynamicVariables.class
 com/chocotea/bean/postman/Auth.class
 com/chocotea/tests/DecimalTests$Tests.class
@@ -51,11 +48,11 @@ com/chocotea/bean/postman/Body.class
 com/chocotea/bean/testRequest.class
 com/chocotea/bean/postman/Modes.class
 com/chocotea/bean/postman/Script.class
+com/chocotea/utility/DefaultClass.class
 com/chocotea/core/annotations/ChocoExpect.class
 com/chocotea/bean/SpringAnnotationMappings.class
 com/chocotea/bean/postman/Options.class
 com/chocotea/bean/postman/Language.class
-com/chocotea/utility/GetIClass.class
 com/chocotea/bean/tests/MixedTests.class
 com/chocotea/bean/Library.class
 com/chocotea/utility/Properties.class

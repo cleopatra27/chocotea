@@ -1,4 +1,3 @@
-/Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/DefaultClass.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/annotations/ChocoRandom.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/annotations/ChocoResponseTest.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/ControllerReader.java
@@ -16,7 +15,6 @@
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/annotations/ChocoCurrencyTest.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/CollectionProcessor.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/Library.java
-/Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/utility/JavaxPathGenerator.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/tests/IntegerTests.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/annotations/SpringCollection.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/utility/RandomGenerator.java
@@ -28,6 +26,7 @@
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/tests/StringTests.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/annotations/SpringRequest.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/postman/Item.java
+/Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/utility/DefaultClass.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/postman/Cookies.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/postman/Auth.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/postman/Options.java
@@ -40,9 +39,7 @@
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/HTTPVerbs.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/annotations/JavaxRequest.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/tests/Tests.java
-/Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/Main.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/tests/MixedTests.java
-/Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/utility/PathGenerator.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/SpringAnnotationMappings.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/core/SpringControllerClassReader.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/tests/CurrencyTest.java
@@ -52,7 +49,6 @@
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/postman/Script.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/postman/Url.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/postman/Header.java
-/Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/utility/GetIClass.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/testRequest.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/postman/Test.java
 /Users/cleopatradouglas/Documents/GitHub/chocotea/src/main/java/com/chocotea/bean/tests/SpecialzedTests/CurrencyTest.java

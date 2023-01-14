@@ -132,18 +132,18 @@ public abstract class ControllerReader {
 
     private void handleTests() throws ClassNotFoundException {
         //call generate tests
-        if(springRequest != null) {
+//        if(springRequest != null) {
             try
             {
                 System.out.println("class =" +springRequest.request());
             }
             catch( MirroredTypeException mte ) {
-                new TestGenerator(testItems).generateTests(mte.getTypeMirror().toString(), item, "test");
+                new TestGenerator(testItems).generateTests(mte.getTypeMirror(), item, "test");
             }
 
-        }else{
-            new TestGenerator(testItems).generateTests(javaxRequest.requestBean().getName(), item, "test");
-        }
+//        }else{
+//            new TestGenerator(testItems).generateTests(javaxRequest.requestBean().getName(), item, "test");
+//        }
     }
 
     private void handleBean() {
