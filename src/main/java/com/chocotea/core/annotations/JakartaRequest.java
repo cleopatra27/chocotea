@@ -14,9 +14,7 @@ import static com.chocotea.bean.postman.Language.json;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.SOURCE)
-public @interface JavaxRequest {
-
-    //TODO; set default to method name
+public @interface JakartaRequest {
     String name() default "Sample Request";
     Language language() default json;
     Auth.Type auth() default noauth;

@@ -1,39 +1,17 @@
 package com.chocotea.core;
 
-import com.chocotea.bean.postman.*;
+import com.chocotea.bean.postman.Header;
+import com.chocotea.bean.postman.Item;
+import com.chocotea.bean.postman.Query;
+import com.chocotea.bean.postman.Url;
+
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
-import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.chocotea.bean.HTTPVerbs.*;
 
-public class SpringControllerClassReader extends ControllerReader {
-
-    public SpringControllerClassReader(
-            List<? extends AnnotationMirror> methodAnnotations,
-            List<List<? extends AnnotationMirror>> parameterAnnotations,
-            Annotation requestAnnotation, String baseUrl,
-            boolean createTest, String protocol, Item item, List<Item> testItems) {
-
-        super(methodAnnotations, parameterAnnotations, requestAnnotation, baseUrl, createTest,
-                protocol, true, item, testItems);
-
-    }
-
-    public String getValue(AnnotationMirror annotationMirror, String key) {
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry
-                : annotationMirror.getElementValues().entrySet()) {
-            if (key.equals(entry.getKey().getSimpleName().toString())) {
-                AnnotationValue annotationValue = entry.getValue();
-                return annotationValue.getValue().toString();
-            }
-        }
-        return null;
-    }
+public class SpringController implements Controller {
 
     @Override
     public void handleMappings(List<? extends AnnotationMirror> methodAnnotations, Item item, String baseUrl) {

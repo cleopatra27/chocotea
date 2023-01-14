@@ -1,6 +1,5 @@
 package com.chocotea.tests;
 
-import com.chocotea.bean.postman.Collection;
 import com.chocotea.bean.postman.Event;
 import com.chocotea.bean.postman.Item;
 
@@ -12,14 +11,9 @@ public class TestGenerator {
     private Item positive;
     private Item negative;
     private Item mixed;
-     private List<Item> testItems;
-    //negative tests
+    private List<Item> testItems;
     private List<Item> negativeItems = new ArrayList<>();
-
-    //positive tests
     private List<Item> positiveItems = new ArrayList<>();
-
-    //mixed tests
     private List<Item> mixedItems = new ArrayList<>();
 
     public TestGenerator(List<Item> testItems){
@@ -31,15 +25,20 @@ public class TestGenerator {
         this.mixed = new Item("MIXED OUTCOME");
     }
 
-    public void generateTests(TypeMirror typeMirror, Item item, String methodName) throws ClassNotFoundException {
-        //Request body tests
-        generateRequestBodyTests(typeMirror, item,  methodName);
+    public void generate(TypeMirror typeMirror, Item item) {
+
+        //body tests
+        try {
+            generateRequestBodyTests(typeMirror, item);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         //path tests
         generateRequestPathTests(item);
 
         //positive tests
-        performPositiveTests(item);
+        generatePositiveTests(item);
 
         //set mixed tests
         this.mixed.setItem(mixedItems);
@@ -54,26 +53,21 @@ public class TestGenerator {
 
     }
 
-    public void generateRequestBodyTests(TypeMirror typeMirror, Item item, String methodName) throws ClassNotFoundException {
+    public void generateRequestBodyTests(TypeMirror typeMirror, Item item) throws ClassNotFoundException {
 
         //TODO: header test
         //TODO: query params test
+
         //string type tests
-        new StringTests().performMixedTests(
+        new BodyTests().performMixedTests(
                 (((DeclaredType) typeMirror).asElement()).getEnclosedElements(), mixedItems, item
         );
-       // new StringTests().performNegativeTests(Class.forName(val).getDeclaredFields(), negativeItems, item);
 
-        //integer type tests
-
-        //boolean type tests
-
-        //decimal type tests
 
     }
 
 
-    public void generateRequestPathTests(Item item) {
+    private void generateRequestPathTests(Item item) {
         Item temp = item.copy();
         temp.setName("VERIFY_ENDPOINT_ERROR_WITH_INCORRECT_URL");
         String url = temp.getRequest().getUrl().getRaw();
@@ -85,7 +79,7 @@ public class TestGenerator {
         negativeItems.add(temp);
     }
 
-    public void performPositiveTests(Item itemSent){
+    private void generatePositiveTests(Item itemSent){
 
         String[] positiveTests = new String[]{
                 "VERIFY_ENDPOINT_WITH_VALID_URL",

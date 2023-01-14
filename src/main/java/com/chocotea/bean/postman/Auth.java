@@ -9,7 +9,9 @@ import lombok.Setter;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Auth {
 
@@ -28,9 +30,8 @@ public class Auth {
     }
 
 
-    public static JSONObject auth(Auth.Type type, String[] values){
-//        Map<String, Object> auth = new HashMap<>();
-        JSONObject auth = new JSONObject();
+      public static Map<String, Object> auth(Auth.Type type, String[] values){
+        Map<String, Object> auth = new HashMap<>();
         auth.put("type", type.name());
         List<Data> dt = new ArrayList<>();
 

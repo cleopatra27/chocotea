@@ -10,13 +10,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
-//@NoArgsConstructor
 public class Request {
 
-    private JSONObject auth;
+   private Map<String, Object> auth;
     private String method;
     private List<Header> header = new ArrayList<>();
     private Body body;
@@ -26,13 +26,10 @@ public class Request {
         this.body = new Body();
     }
 
-    public void setAuth(String data){
-            this.auth =new JSONObject(data);
-
-    }
     public void setMethod(HTTPVerbs verb){
         this.method = verb.name();
     }
+
     @Override
     public String toString() {
 

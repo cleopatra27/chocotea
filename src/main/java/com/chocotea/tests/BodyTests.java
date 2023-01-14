@@ -3,18 +3,16 @@ package com.chocotea.tests;
 import com.chocotea.bean.postman.Event;
 import com.chocotea.bean.postman.Item;
 import com.chocotea.core.annotations.ChocoExpect;
-import com.chocotea.core.annotations.ChocoRandom;
 import org.json.JSONObject;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.validation.constraints.*;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class StringTests {
+public class BodyTests {
     private String tobe400 = "pm.test(\"Status test\", function () {\n" +
             "    pm.response.to.have.status(400);\n" +
             "});";
@@ -39,23 +37,18 @@ public class StringTests {
 
     }
 
-//    public void performMixedTests(Field[] fields, List<Item> mixedItems, Item itemSent){
-public void performMixedTests(List<? extends Element> fields, List<Item> mixedItems, Item itemSent){
+    public void performMixedTests(List<? extends Element> fields, List<Item> mixedItems, Item itemSent){
 
         //loop through fields
         for (Element field: fields) {
-            //if string
-            //if(field.getType().equals(String.class)){
-
                 //handle the test on said field
-            if(field.getKind().isVariable()) {
+            if(field.getKind().isVariable() && field.asType().toString().contains("String")) {
                 mixedItems.add(validateNotNull(itemSent, field));
                 mixedItems.add(validateSize(itemSent, field));
                 mixedItems.add(validateNotBlank(itemSent, field));
                 mixedItems.add(validateNotEmpty(itemSent, field));
                 mixedItems.add(verifyRandomNumbers(itemSent, field));
             }
-            //}
         }
 
     }
@@ -83,14 +76,11 @@ public void performMixedTests(List<? extends Element> fields, List<Item> mixedIt
         //return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_RANDOM_NUMBERS_", 1342, Pattern.class);
     }
 
-    private Item getItemTest(Item item, Element field, String name, Object val, Class<?> annotationClass) {
+    private Item getItemTest(Item item, Element field, String name, Object val,  String annotationClass) {
         AtomicReference<Item> itemTemp = new AtomicReference<>();
 
         field.getAnnotationMirrors().forEach(annotation -> {
-
-//            if(annotation.getAnnotationType().equals(annotationClass)){
-
-            if(annotation.getAnnotationType().asElement().equals(annotationClass)){
+            if(annotation.getAnnotationType().asElement().getSimpleName().toString().contains(annotationClass)){
                 itemTemp.set(item.copy());
                 itemTemp.get().setName(name+ field.getSimpleName().toString());
                 itemTemp.get().getRequest().getBody().setRaw(
@@ -125,53 +115,28 @@ public void performMixedTests(List<? extends Element> fields, List<Item> mixedIt
                 "});";
     }
 
-//    public Item validateNotBlank(Item item, Field[] fields){
-//        Item itemTemp = item.copy();
-//
-//        for (Field field:fields) {
-//            Arrays.stream(field.getDeclaredAnnotations()).forEach(annotation -> {
-//                if(annotation.annotationType().equals(NotBlank.class)){
-//                    itemTemp.setName("VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_EMPTY_FIELDS_" + field.getName());
-//                    itemTemp.getRequest().getBody().setRaw(
-//                            new JSONObject(itemTemp.getRequest().getBody().getRaw())
-//                                    .put(field.getName(), "").toString()
-//                    );
-//                }
-//            });
-//        }
-//
-//        itemTemp.setEvent(new ArrayList<>());
-//        itemTemp.getEvent().add(new Event("test", tobe400));
-//        return itemTemp;
-//
-//    }
-
-
     private Item validateSize(Item item, Element field){
         AtomicInteger min = new AtomicInteger();
         AtomicInteger max = new AtomicInteger();
-//        Arrays.stream(field.getDeclaredAnnotations()).forEach(annotation -> {
-//            if(annotation.annotationType().equals(Size.class)) {
-                if(field.getAnnotation(Size.class) != null){
-                min.set(field.getAnnotation(Size.class).min());
-                max.set(field.getAnnotation(Size.class).max());
-            }
-        //});
+        if(field.getAnnotation(Size.class) != null){
+            min.set(field.getAnnotation(Size.class).min());
+            max.set(field.getAnnotation(Size.class).max());
+        }
 
         return getItemTest(item, field, "VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_GREATER_SIZE_FIELDS_",
                 new Random().nextInt(min.get(),max.get() + 100) + min.get(),
-                Size.class);
+                "Size");
     }
     private Item validateNotBlank(Item item, Element field){
-        return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_BLANK_", "", NotBlank.class);
+        return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_BLANK_", "", "NotBlank");
     }
 
     private Item validateNotEmpty(Item item, Element field){
-        return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_EMPTY_", "", NotEmpty.class);
+        return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_EMPTY_", "", "NotEmpty");
     }
 
     private Item validateNotNull(Item item, Element field){
-        return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_NULL_", null, NotNull.class);
+        return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_NULL_", null, "NotNull");
     }
 
 }
