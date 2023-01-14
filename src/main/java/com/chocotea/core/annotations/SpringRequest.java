@@ -2,7 +2,7 @@ package com.chocotea.core.annotations;
 
 import com.chocotea.bean.postman.Auth;
 import com.chocotea.bean.postman.Language;
-import com.chocotea.core.DefaultClass;
+import com.chocotea.utility.DefaultClass;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

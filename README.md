@@ -27,5 +27,31 @@ To install the library,
 - [@ChocoDuplicateTest](documentation/ChocoDuplicateTest.md)
 - [@ChocoCurrencyTest](documentation/ChocoCurrencyTest.md)
 
+## Language
+This is language of the request. The default is json and options are:
+```text
+    text,
+    json,
+    javascript,
+    html,
+    xml
+```
+
+## Auth
+This is used to define the auth type for the request. The default is noauth and options are:
+```text
+    apikey,
+    awsv4,
+    basic,
+    bearer,
+    digest,
+    edgegrid,
+    hawk,
+    noauth,
+    oauth1,
+    oauth2,
+    ntlm
+```
+
 
 ## Sample collection [HERE](documentation/sample/sampleCollection.json)

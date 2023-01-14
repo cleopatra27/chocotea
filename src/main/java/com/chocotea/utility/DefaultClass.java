@@ -1,4 +1,4 @@
-package com.chocotea.core;
+package com.chocotea.utility;
 
 public class DefaultClass {
 }

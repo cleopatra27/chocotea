@@ -57,7 +57,9 @@ public class TestGenerator {
         //TODO: header test
         //TODO: query params test
         //string type tests
-        new StringTests().performMixedTests(Class.forName(val).getDeclaredFields(), mixedItems, item);
+        new StringTests().performMixedTests(
+                Class.forName(val).getDeclaredFields(), mixedItems, item
+        );
         new StringTests().performNegativeTests(Class.forName(val).getDeclaredFields(), negativeItems, item);
 
         //integer type tests

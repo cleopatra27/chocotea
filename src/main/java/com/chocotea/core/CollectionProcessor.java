@@ -123,7 +123,7 @@ public class CollectionProcessor extends AbstractProcessor {
             }
             collection.getItem().add(requestFolder);
         collection.getItem().add(this.testFolder);
-        
+
             //save item in /resources folder
             try {
                 Writer writer = processingEnv.getFiler().createResource(
