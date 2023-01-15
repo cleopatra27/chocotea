@@ -1,4 +1,4 @@
-package com.chocotea.tests;
+package com.chocotea.core.tests;
 
 import com.chocotea.bean.postman.Event;
 import com.chocotea.bean.postman.Item;

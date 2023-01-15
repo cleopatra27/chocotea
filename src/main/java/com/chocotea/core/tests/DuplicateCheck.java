@@ -1,4 +1,4 @@
-package com.chocotea.tests;
+package com.chocotea.core.tests;
 
 public class DuplicateCheck {
 }

@@ -1,5 +1,5 @@
 # ChocoTea ☕️
-A library that generates postman collection and tests from java code.
+A library that generates postman collection, environment and integration tests from java code.
 
 The aim of chocotea is to help reduce the amount of time it takes to setup a postman
 collection with requests and tests manually.
@@ -56,5 +56,8 @@ This is used to define the auth type for the request. The default is noauth and 
     ntlm
 ```
 
+This library runs on compile, after which your collection and environment json files are stored in 
+your-project-folder/target/generated-sources/annotations
 
 ## Sample collection [HERE](documentation/sample/sampleCollection.json)
+## Sample environment [HERE](documentation/sample/sampleEnvironment.json)

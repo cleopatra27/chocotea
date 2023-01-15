@@ -4,7 +4,7 @@ import com.chocotea.bean.postman.Item;
 import com.chocotea.core.annotations.JakartaRequest;
 import com.chocotea.core.annotations.JavaxRequest;
 import com.chocotea.core.annotations.SpringRequest;
-import com.chocotea.tests.TestGenerator;
+import com.chocotea.core.tests.TestGenerator;
 import com.chocotea.utility.BeanReader;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -20,21 +20,20 @@ public final class Collection {
 
         public Item item;
         private List<Item> testItems;
-        public String baseUrl;
+        public String baseUrl = "{{BaseUrl}}";
         private String protocol;
         private List<? extends AnnotationMirror> methodAnnotations;
         private List<List<? extends  AnnotationMirror>> parameterAnnotations;
         private Annotation requestAnnotation;
 
         public Builder(List<? extends AnnotationMirror> methodAnnotations, List<List<? extends AnnotationMirror>> parameterAnnotations,
-                               Annotation requestAnnotation, String baseUrl, String protocol, boolean spring,
+                               Annotation requestAnnotation, String protocol,
                                Item item, List<Item> testItems){
             Factory.getOperation(requestAnnotation).get().handleMappings(methodAnnotations,item, baseUrl);
             this.testItems = testItems;
             this.item = item;
             this.methodAnnotations = methodAnnotations;
             this.parameterAnnotations = parameterAnnotations;
-            this.baseUrl = baseUrl;
             this.protocol = protocol;
             this.requestAnnotation = requestAnnotation;
         }
@@ -127,10 +126,10 @@ public final class Collection {
     }
     public static Builder builder (List<? extends AnnotationMirror> methodAnnotations,
                                    List<List<? extends AnnotationMirror>> parameterAnnotations,
-                            Annotation requestAnnotation, String baseUrl, String protocol, boolean spring,
+                            Annotation requestAnnotation,  String protocol,
                             Item item, List<Item> testItems){
-        return new Builder(methodAnnotations, parameterAnnotations, requestAnnotation, baseUrl, protocol,
-                spring, item, testItems);
+        return new Builder(methodAnnotations, parameterAnnotations, requestAnnotation,  protocol,
+                 item, testItems);
     }
 
 

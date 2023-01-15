@@ -1,4 +1,4 @@
-package com.chocotea.tests;
+package com.chocotea.core.tests;
 
 import com.chocotea.bean.postman.Event;
 import com.chocotea.bean.postman.Item;
@@ -42,7 +42,8 @@ public class BodyTests {
         //loop through fields
         for (Element field: fields) {
                 //handle the test on said field
-            if(field.getKind().isVariable() && field.asType().toString().contains("String")) {
+//            if(field.getKind().isVariable() && field.asType().toString().contains("String")) {
+            if(field.getKind().isVariable()) {
                 mixedItems.add(validateNotNull(itemSent, field));
                 mixedItems.add(validateSize(itemSent, field));
                 mixedItems.add(validateNotBlank(itemSent, field));

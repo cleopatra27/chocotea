@@ -1,6 +1,7 @@
 package com.chocotea.core;
 
 import com.chocotea.bean.postman.Collection;
+import com.chocotea.bean.postman.Environment;
 import com.chocotea.bean.postman.Item;
 import com.chocotea.core.annotations.*;
 import com.google.auto.service.AutoService;
@@ -35,6 +36,8 @@ public class CollectionProcessor extends AbstractProcessor{
     private Annotation requestAnnotation;
     private Set<? extends Element> myAnnotationMethods = new HashSet<>();
 
+    private Environment environment;
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
@@ -48,6 +51,8 @@ public class CollectionProcessor extends AbstractProcessor{
 
                 //create new collection with defined collection name
                 collection = new com.chocotea.bean.postman.Collection(name);
+
+                setupEnvironment();
 
                 //get method annotations
                 getMethodAnnotations(annotation, roundEnv);
@@ -71,8 +76,8 @@ public class CollectionProcessor extends AbstractProcessor{
                     } //else?
 
                     //populate collection with builder
-                    com.chocotea.core.Collection.builder(myAnnotationMethod.getAnnotationMirrors(), parameterAnnotations, requestAnnotation,
-                                    baseUrl, protocol, true, item, testItems)
+                    com.chocotea.core.Collection.builder(myAnnotationMethod.getAnnotationMirrors(), parameterAnnotations,
+                                    requestAnnotation, protocol,  item, testItems)
                             .setLanguage()
                             .setHost()
                             .setProtocol()
@@ -94,6 +99,15 @@ public class CollectionProcessor extends AbstractProcessor{
 
 
         return true;
+    }
+
+    private void setupEnvironment() {
+        //create environment
+        environment = new Environment(name);
+
+        //set base url
+        environment.getValues().add(new Environment.Values(
+                "BaseUrl", baseUrl, "default", true));
     }
 
     private void createRequestFolder(TypeElement annotation, Element myAnnotationMethod) {
@@ -189,6 +203,12 @@ public class CollectionProcessor extends AbstractProcessor{
                     StandardLocation.SOURCE_OUTPUT, "",
                     name.replaceAll("\\s+", "_").toLowerCase()+".json").openWriter();
             writer.write(collection.toString());
+            writer.close();
+
+             writer = processingEnv.getFiler().createResource(
+                    StandardLocation.SOURCE_OUTPUT, "",
+                    name.replaceAll("\\s+", "_").toLowerCase()+"_environment.json").openWriter();
+            writer.write(environment.toString());
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
