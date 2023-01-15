@@ -9,6 +9,9 @@ This works with API(s) built with spring, jakarta and javax.
 This library runs at runtime after which generated files are stored in the resources folder or sent to 
 the URL provided.
 
+This can be used with more than one controller on any or all the supported libraries, however, they need to have different 
+collection names.
+
 ## Requirements
 
 ## Installation
