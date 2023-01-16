@@ -12,16 +12,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class BodyTests {
-    private String tobe400 = "pm.test(\"Status test\", function () {\n" +
-            "    pm.response.to.have.status(400);\n" +
-            "});";
-
-    private String responseCheck = "pm.test (\"Validate response body contains valid response\", function (){\n" +
-            "var jsonData = pm. response.json();\n" +
-            "pm.expect (jsonData.message).to.be.a(\"String\");\n" +
-            "pm.expect (jsonData.success).to.equal(false);\n" +
-            "});";
+public class BodyTests extends TestGenerator.PostmanVerify {
 
     public void performNegativeTests(Field[] fields, List<Item> negativeItems, Item itemSent){
         Field[] tempFields = new Field[fields.length];
@@ -36,6 +27,7 @@ public class BodyTests {
         }
 
     }
+
 
     public void performMixedTests(List<? extends Element> fields, List<Item> mixedItems, Item itemSent){
 
@@ -64,7 +56,7 @@ public class BodyTests {
                                 .put(field.getSimpleName().toString(), new Random().nextInt(100 + 28) + 20).toString()
                 );
                 itemTemp.get().setEvent(new ArrayList<>());
-                itemTemp.get().getEvent().add(new Event("test", tobe400));
+                itemTemp.get().getEvent().add(new Event("test", postmanVerifyStatusCode(400)));
 
         //});
 
@@ -89,7 +81,7 @@ public class BodyTests {
                                 .put(field.getSimpleName().toString(), val).toString()
                 );
                 itemTemp.get().setEvent(new ArrayList<>());
-                itemTemp.get().getEvent().add(new Event("test", tobe400));
+                itemTemp.get().getEvent().add(new Event("test", postmanVerifyStatusCode(400)));
 
             }
         });

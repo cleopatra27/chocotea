@@ -80,7 +80,7 @@ public class CollectionProcessor extends AbstractProcessor{
                                     requestAnnotation, protocol,  item, testItems)
                             .setLanguage()
                             .setHost()
-                            .setProtocol()
+                            //.setProtocol()
                             .setBean()
                             .setAuth()
                             .createTests(test)

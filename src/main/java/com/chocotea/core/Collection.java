@@ -50,15 +50,17 @@ public final class Collection {
         }
 
         public Builder setHost(){
-            item.getRequest().getUrl().getHost().addAll(
-                    List.of(baseUrl.substring(
-                            baseUrl.indexOf(protocol+"://")
-                                    + (protocol+"://").length()
-                    ).split("\\."))
-            );
+//            item.getRequest().getUrl().getHost().addAll(
+//                    List.of(baseUrl.substring(
+//                            baseUrl.indexOf(protocol+"://")
+//                                    + (protocol+"://").length()
+//                    ).split("\\."))
+//            );
+            item.getRequest().getUrl().getHost().add(baseUrl);
             return this;
         }
 
+        @Deprecated
         public Builder setProtocol(){
             item.getRequest().getUrl().setProtocol(protocol);
             return this;

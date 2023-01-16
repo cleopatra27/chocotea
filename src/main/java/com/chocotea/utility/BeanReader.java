@@ -10,8 +10,6 @@ import javax.lang.model.type.TypeMirror;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.chocotea.utility.RandomGenerator.stringGenerator;
-
 public class BeanReader {
 
     public static String generate(TypeMirror typeMirror){
@@ -31,10 +29,10 @@ public class BeanReader {
                             variable.set(element.getAnnotation(ChocoRandom.class).dynamic());
                         }
 
-                        //TODO  switch between generators
-                        bod.put(element.getSimpleName().toString(), stringGenerator(generateRandom.get(), variable.get()));
-
-                        //TODO: if inner class
+                        bod.put(element.getSimpleName().toString(),
+                                RandomGenerator.generate(generateRandom.get(),
+                                        variable.get(), element.asType().toString())
+                        );
 
                     }
                 });

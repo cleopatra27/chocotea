@@ -19,34 +19,43 @@ public class SpringController implements Controller {
             if (annotationMirror.getAnnotationType().asElement().getSimpleName().toString().equals("PostMapping")) {
                 //set method
                 item.getRequest().setMethod(POST);
-                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")));
+                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value").split("/")));
+                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1).split("/")));
 
             } else if (annotationMirror.getAnnotationType().asElement().getSimpleName().toString().equals("GetMapping")) {
                 //set method
                 item.getRequest().setMethod(GET);
-                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")));
+                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value").split("/")));
+                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1).split("/")));
 
             } else if (annotationMirror.getAnnotationType().asElement().getSimpleName().toString().equals("PutMapping")) {
                 //set method
                 item.getRequest().setMethod(PUT);
-                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")));
+                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value").split("/")));
+                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1).split("/")));
 
             } else if (annotationMirror.getAnnotationType().asElement().getSimpleName().toString().equals("DeleteMapping")) {
                 //set method
                 item.getRequest().setMethod(DELETE);
-                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")));
+                item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value").split("/")));
+                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                        .substring(1, getValue(annotationMirror, "value").length() - 1)
+                        .split("/")));
             }
 
         });

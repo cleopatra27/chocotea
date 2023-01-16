@@ -7,6 +7,10 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.chocotea.core.tests.TestGenerator.PostmanVerify.postmanVerifyStatusCode;
+
 public class TestGenerator {
     private Item positive;
     private Item negative;
@@ -15,6 +19,30 @@ public class TestGenerator {
     private List<Item> negativeItems = new ArrayList<>();
     private List<Item> positiveItems = new ArrayList<>();
     private List<Item> mixedItems = new ArrayList<>();
+
+    static abstract class PostmanVerify{
+        public static String postmanVerifyStatusCode(int code){
+            return "pm.test(\"Status code is "+code+"\", function () {\n" +
+                    "    pm.response.to.have.status("+code+");\n" +
+                    "});";
+        }
+
+        private String postmanVerifyResponseBody(Map<String, Object> expect){
+            //TODO pm.response.code:Number, pm.response.status:String, pm.response.headers:HeaderList,
+            // pm.response.responseTime:Number, pm.response.responseSize:Number, pm.response.text():Function → String
+
+            final String[] val = new String[1];
+            val[0] =  "pm.test(\"Validate response body contains valid response\",  function () {\n" +
+                    "    var jsonData = pm.response.json();\n";
+
+            expect.forEach((key, value) -> val[0] = val[0] + " pm.expect(jsonData." + key
+                    + ").to.be.a(\"" + value + "\");  \n" +
+                    "    pm.expect(jsonData.success).to.equal(true);\n" +
+                    "});");
+
+            return val[0];
+        }
+    }
 
     public TestGenerator(List<Item> testItems){
         this.testItems = testItems;
@@ -74,7 +102,7 @@ public class TestGenerator {
         temp.getRequest().getUrl().setRaw(url.substring(url.length()-4));
 
         temp.setEvent(new ArrayList<>());
-        temp.getEvent().add(new Event("test", "tobe400"));
+        temp.getEvent().add(new Event("test", postmanVerifyStatusCode(404)));
 
         negativeItems.add(temp);
     }
@@ -92,7 +120,7 @@ public class TestGenerator {
             itemTemp.setName(positiveTests[i]);
 
             itemTemp.setEvent(new ArrayList<>());
-            itemTemp.getEvent().add(new Event("test", "tobe400"));
+            itemTemp.getEvent().add(new Event("test", postmanVerifyStatusCode(200)));
             positiveItems.add(itemTemp);
         }
 
