@@ -1,7 +1,5 @@
 package com.chocotea.core.annotations;
 
-import com.chocotea.bean.Library;
-import org.springframework.core.annotation.AliasFor;
 import java.lang.annotation.*;
 
 @Target(ElementType.TYPE)

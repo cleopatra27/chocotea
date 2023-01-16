@@ -27,7 +27,7 @@ public class TestGenerator {
                     "});";
         }
 
-        private String postmanVerifyResponseBody(Map<String, Object> expect){
+        public String postmanVerifyResponseBody(Map<String, Object> expect){
             //TODO pm.response.code:Number, pm.response.status:String, pm.response.headers:HeaderList,
             // pm.response.responseTime:Number, pm.response.responseSize:Number, pm.response.text():Function → String
 
@@ -87,9 +87,10 @@ public class TestGenerator {
         //TODO: query params test
 
         //string type tests
-        new BodyTests().performMixedTests(
-                (((DeclaredType) typeMirror).asElement()).getEnclosedElements(), mixedItems, item
+        new BodyTests().performTests(
+                (((DeclaredType) typeMirror).asElement()).getEnclosedElements(), mixedItems, negativeItems, item
         );
+
 
 
     }
