@@ -126,8 +126,8 @@ public class BodyTests extends TestGenerator.PostmanVerify {
 
         //loop through fields
         for (Element field: fields) {
-                //handle the test on said field
-//            if(field.getKind().isVariable() && field.asType().toString().contains("String")) {
+
+            //handle the test on said field
             if(field.getKind().isVariable()) {
                 mixedItems.add(validateNotNull(itemSent, field));
                 mixedItems.add(validateSize(itemSent, field));
@@ -135,8 +135,8 @@ public class BodyTests extends TestGenerator.PostmanVerify {
                 mixedItems.add(validateNotEmpty(itemSent, field));
                 mixedItems.add(verifyRandomNumbers(itemSent, field));
                 mixedItems.add(validateAlphaNumeric(itemSent, field));
-
-                // perform more  decimal place test
+                validateDecimalMax(itemSent, field, mixedItems);
+                validateDecimalMin(itemSent, field, mixedItems);
             }
         }
 
@@ -203,7 +203,7 @@ public class BodyTests extends TestGenerator.PostmanVerify {
     }
 
     private void validateDecimalMax(Item item, Element field, List<Item> mixedItems){
-        String max = null;
+        String max;
         if(field.getAnnotation(DecimalMax.class) != null){
             max = field.getAnnotation(DecimalMax.class).value();
 

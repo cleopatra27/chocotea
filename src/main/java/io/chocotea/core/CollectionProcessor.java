@@ -217,6 +217,9 @@ public class CollectionProcessor extends AbstractProcessor{
         }
     }
 
+    /**
+     * writes collection and environment to SOURCE_OUTPUT
+     */
     private void writeCollectionToFile(){
         try {
             Writer writer = processingEnv.getFiler().createResource(
