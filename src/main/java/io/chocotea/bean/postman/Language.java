@@ -6,5 +6,6 @@ public enum Language {
     json,
     javascript,
     html,
-    xml
+    xml,
+    none
 }

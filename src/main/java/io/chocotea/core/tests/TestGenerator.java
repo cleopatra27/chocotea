@@ -54,11 +54,13 @@ public class TestGenerator {
 
     public void generate(TypeMirror requestMirror, TypeMirror responseMirror, Item item) {
 
-        //body tests
-        try {
-            generateRequestBodyTests(requestMirror, responseMirror, item);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        if(responseMirror != null) {
+            //body tests
+            try {
+                generateRequestBodyTests(requestMirror, responseMirror, item);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         //path tests

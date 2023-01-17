@@ -9,11 +9,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import static io.chocotea.bean.postman.Language.none;
+
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.SOURCE)
 public @interface JakartaRequest {
     String name() default "Sample Request";
-    Language language() default Language.json;
+    Language language() default none;
     Auth.Type auth() default Auth.Type.noauth;
     String[] authValue() default "";
     Class<?> request() default DefaultClass.class;

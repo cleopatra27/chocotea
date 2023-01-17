@@ -8,6 +8,7 @@ import io.chocotea.core.tests.TestGenerator;
 import io.chocotea.utility.BeanReader;
 
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -94,7 +95,10 @@ public final class Collection {
                     }
                 } catch( MirroredTypeException mte ) {
                     item.getRequest().getBody().setMode(raw.name());
-                    item.getRequest().getBody().setRaw(BeanReader.generate(mte.getTypeMirror()));
+                    if(!((DeclaredType) mte.getTypeMirror()).asElement().getSimpleName().toString().contains("DefaultClass")) {
+                        item.getRequest().getBody().setRaw(BeanReader.generate(mte.getTypeMirror()));
+                    }
+                    //TODO generate other types of bean
                 }
             }
             return this;
@@ -145,8 +149,14 @@ public final class Collection {
                             ((JakartaRequest)requestAnnotation).response();
                         }
                     } catch (MirroredTypeException responseMirror) {
-                        new TestGenerator(testItems)
-                                .generate(requestMirror.getTypeMirror(), responseMirror.getTypeMirror(), item);
+                        if(!((DeclaredType) requestMirror.getTypeMirror()).asElement().getSimpleName().toString().contains("DefaultClass")) {
+                            new TestGenerator(testItems)
+                                    .generate(requestMirror.getTypeMirror(), responseMirror.getTypeMirror(), item);
+                        }else{
+                            new TestGenerator(testItems)
+                                    .generate(null, null, item);
+                        }
+
                     }
 
                 }

@@ -11,13 +11,14 @@ import java.lang.annotation.Target;
 
 import static io.chocotea.bean.postman.Auth.Type.noauth;
 import static io.chocotea.bean.postman.Language.json;
+import static io.chocotea.bean.postman.Language.none;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.SOURCE)
 public @interface JavaxRequest {
 
     String name() default "Sample Request";
-    Language language() default json;
+    Language language() default none;
     Auth.Type auth() default noauth;
     String[] authValue() default "";
     Class<?> request() default DefaultClass.class;
