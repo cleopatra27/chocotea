@@ -16,12 +16,10 @@ import static io.chocotea.bean.postman.Language.json;
 @Retention(RetentionPolicy.SOURCE)
 public @interface JavaxRequest {
 
-    //TODO; set default to method name
     String name() default "Sample Request";
     Language language() default json;
     Auth.Type auth() default noauth;
     String[] authValue() default "";
-    //TODO: make optional
     Class<?> request() default DefaultClass.class;
     Class<?> response() default DefaultClass.class;
 }

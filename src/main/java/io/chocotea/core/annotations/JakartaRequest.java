@@ -16,7 +16,6 @@ public @interface JakartaRequest {
     Language language() default Language.json;
     Auth.Type auth() default Auth.Type.noauth;
     String[] authValue() default "";
-    //TODO: make optional
     Class<?> request() default DefaultClass.class;
     Class<?> response() default DefaultClass.class;
 }

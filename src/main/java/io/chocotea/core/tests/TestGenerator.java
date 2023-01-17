@@ -80,21 +80,16 @@ public class TestGenerator {
 
     }
 
-    public void generateRequestBodyTests(TypeMirror requestMirror, TypeMirror responseMirror, Item item) throws ClassNotFoundException {
-
-        //TODO: header test
-        //TODO: query params test
-
-        //string type tests
+    public void generateRequestBodyTests(TypeMirror requestMirror, TypeMirror responseMirror, Item item)
+            throws ClassNotFoundException {
         new BodyTests().performTests(
                 (((DeclaredType) requestMirror).asElement()).getEnclosedElements(),
                 (((DeclaredType) responseMirror).asElement()).getEnclosedElements(),mixedItems, negativeItems, item
         );
-
-
-
     }
 
+    //TODO: header test
+    //TODO: query params test
 
     private void generateRequestPathTests(Item item) {
         Item temp = item.copy();
