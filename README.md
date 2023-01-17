@@ -45,25 +45,8 @@ compile("io.chocotea:chocotea:1.0")
 
 ## Example
 This example shows a spring collection variables defined
-```java
-@SpringCollection(
-        name = "susan more collection", 
-        createTest = true, 
-        baseUrl = "https://example.com")
-public class PathGenerator {
-    
-    @SpringRequest(requestBean = Info.class, auth = Auth.Type.bearer, authValue = "ABCTOKEN")
-    @PostMapping(value = "/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID}")
-    public String generate(
-            @PathVariable( "resortID" )  int resortID,
-            @RequestParam("id") @NotNull @ChocoRandom(dynamic = DynamicVariables.randomCatchPhrase) String id,
-            @RequestBody Info resource, 
-            @RequestHeader("Authorization") String authorization){
-        ....
-    }
-    
-}
-```
+
+![Snap](https://user-images.githubusercontent.com/18359815/212893841-0dd97c0c-d7ac-432c-9278-748e563e4895.png)
 
 ## Language
 This is the list of languages that can be passed to the request. The default is json and options are:
