@@ -15,6 +15,8 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
+import static javax.tools.Diagnostic.Kind.NOTE;
+
 @SupportedAnnotationTypes({"io.chocotea.core.annotations.SpringCollection",
         "io.chocotea.core.annotations.JavaxCollection",
         "io.chocotea.core.annotations.JakartaCollection"})
@@ -43,6 +45,8 @@ public class CollectionProcessor extends AbstractProcessor{
 
             //loop through annotations
             for (TypeElement annotation : annotations) {
+                processingEnv.getMessager().printMessage(NOTE, "working on your chocotea collection!");
+
                 requestFolder.setItem(new ArrayList<>());
                 testFolder.setItem(new ArrayList<>());
 
@@ -98,9 +102,15 @@ public class CollectionProcessor extends AbstractProcessor{
             }
 
 
+        processingEnv.getMessager().printMessage(NOTE,
+                "your chocotea collection is ready at " + StandardLocation.SOURCE_OUTPUT.name());
+
         return true;
     }
 
+    /**
+     * sets up the environment with the baseurl
+     */
     private void setupEnvironment() {
         //create environment
         environment = new Environment(name);
@@ -110,6 +120,11 @@ public class CollectionProcessor extends AbstractProcessor{
                 "BaseUrl", baseUrl, "default", true));
     }
 
+    /**
+     * creates the request folder based on choco collection type, spring, javax, jarkata
+     * @param annotation the choco request annotation
+     * @param myAnnotationMethod the method with choco request annotation
+     */
     private void createRequestFolder(TypeElement annotation, Element myAnnotationMethod) {
 
         if (annotation.getSimpleName().contentEquals("SpringCollection")) {
@@ -130,6 +145,11 @@ public class CollectionProcessor extends AbstractProcessor{
         }
     }
 
+    /**
+     * gets the type of choco annotation
+     * @param annotation the annotation to check
+     * @param myAnnotationMethod the method annotation
+     */
     private void getRequestAnnotation(TypeElement annotation, Element myAnnotationMethod) {
         if (annotation.getSimpleName().contentEquals("SpringCollection")) {
             requestAnnotation = myAnnotationMethod.getAnnotation(SpringRequest.class);

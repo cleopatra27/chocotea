@@ -35,9 +35,8 @@ public class TestGenerator {
             val[0] =  "pm.test(\"Validate response body contains valid response\",  function () {\n" +
                     "    var jsonData = pm.response.json();\n";
 
-            expect.forEach((key, value) -> val[0] = val[0] + " pm.expect(jsonData." + key
-                    + ").to.be.a(\"" + value + "\");  \n" +
-                    "    pm.expect(jsonData.success).to.equal(true);\n" +
+            expect.forEach((key, value) -> val[0] = val[0] + " pm.expect(jsonData." + value
+                    + ").to.be.a(\"" + key + "\");  \n" +
                     "});");
 
             return val[0];

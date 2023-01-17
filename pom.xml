@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.chocotea</groupId>
-    <artifactId>JavaToPostman</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>chocotea</artifactId>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <properties>

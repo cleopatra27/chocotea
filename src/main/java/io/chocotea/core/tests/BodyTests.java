@@ -28,12 +28,26 @@ public class BodyTests extends TestGenerator.PostmanVerify {
 
         //look for chocoExpect
         Map<String, Object> expect = new HashMap<>();
+//        fields.forEach(field -> {
+//            if(field.getAnnotationsByType(ChocoExpect.class) != null){
+//                expect.put(field.asType().toString(),
+//                        field.getSimpleName().toString());
+//            }
+//        });
         fields.forEach(field -> {
-            if(field.getAnnotationsByType(ChocoExpect.class) != null){
-                expect.put(field.asType().toString(),
-                        field.getSimpleName().toString());
+            if(field.getKind().isVariable()) {
+                field.getAnnotationMirrors().forEach(annotation -> {
+                    if(annotation.getAnnotationType().asElement().getSimpleName().toString().contains("ChocoExpect")){
+
+                        expect.put(field.asType().toString().contains("String") ?
+                                        field.asType().toString() : "string",
+                                field.getSimpleName().toString());
+                    }
+                });
             }
         });
+
+
 
         itemTemp.get().getEvent().add(new Event("test", postmanVerifyResponseBody(expect)));
 
@@ -60,10 +74,16 @@ public class BodyTests extends TestGenerator.PostmanVerify {
 
         responseFields.forEach(field -> {
             if(field.getKind().isVariable()) {
-        if (field.getAnnotationsByType(ChocoExpect.class) != null) {
-            expect.put(field.asType().toString(),
-                    field.getSimpleName().toString());
-        }
+                field.getAnnotationMirrors().forEach(annotation -> {
+                    if(annotation.getAnnotationType().asElement().getSimpleName().toString().contains("ChocoExpect")){
+                        expect.put(field.asType().toString(),
+                                field.getSimpleName().toString());
+                    }
+                });
+//        if (field.getAnnotationsByType(ChocoExpect.class) != null) {
+//            expect.put(field.asType().toString(),
+//                    field.getSimpleName().toString());
+//        }
             }
         });
 
@@ -95,10 +115,6 @@ public class BodyTests extends TestGenerator.PostmanVerify {
 
     }
 
-    public void verifySpecialCharacters(){
-        //$%$#$
-    }
-
     public void performTests(List<? extends Element> requestFields, List<? extends Element> responseFields,
                              List<Item> mixedItems, List<Item> negativeItems, Item itemSent){
         performMixedTests(requestFields, mixedItems,  itemSent);
@@ -118,6 +134,7 @@ public class BodyTests extends TestGenerator.PostmanVerify {
                 mixedItems.add(validateNotBlank(itemSent, field));
                 mixedItems.add(validateNotEmpty(itemSent, field));
                 mixedItems.add(verifyRandomNumbers(itemSent, field));
+                mixedItems.add(validateAlphaNumeric(itemSent, field));
 
                 // perform more  decimal place test
             }
@@ -185,9 +202,31 @@ public class BodyTests extends TestGenerator.PostmanVerify {
         return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_BLANK_", "", "NotBlank");
     }
 
-    private Item validateDecimal(Item item, Element field){
+    private void validateDecimalMax(Item item, Element field, List<Item> mixedItems){
+        String max = null;
+        if(field.getAnnotation(DecimalMax.class) != null){
+            max = field.getAnnotation(DecimalMax.class).value();
+
+            mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
+                    new Random().nextDouble(Double.parseDouble(max)), "DecimalMax"));
+        }
+    }
+    private void validateDecimalMin(Item item, Element field, List<Item> mixedItems){
+        String min;
+        if(field.getAnnotation(DecimalMin.class) != null){
+            min = field.getAnnotation(DecimalMin.class).value();
+
+            mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_LESS_DECIMAL_PLACES",
+                    new Random().nextDouble(Double.parseDouble(min)), "DecimalMin"));
+        }
+    }
+    private Item validateDigit(Item item, Element field){
         return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
-                "change to more decimal places than defined", "Decimal");
+                "change to more decimal places than defined", "Digit");
+    }
+
+    private Item validateAlphaNumeric(Item item, Element field){
+        return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_WITH_ALHPANUMERIC_", "$%$#$", "Pattern");
     }
 
     private Item validateNotEmpty(Item item, Element field){

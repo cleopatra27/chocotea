@@ -101,7 +101,7 @@ public final class Collection {
         }
 
         /**
-         * adds auth ti request
+         * adds auth to request
          * @return
          */
         public Builder setAuth(){
@@ -119,6 +119,11 @@ public final class Collection {
             return this;
         }
 
+        /**
+         * creates tests for header, auth, path, body and adds to request
+         * @param test
+         * @return
+         */
         public Builder createTests(boolean test)  {
             //TODO: prevent this method from growing
             if(test) {
@@ -149,6 +154,9 @@ public final class Collection {
                 return this;
         }
 
+        /**
+         * builds the header parameters, query parameters and path parameters.
+         */
         public void build(){
             Factory.getOperation(requestAnnotation).get().handleHeaderParameters(parameterAnnotations,item);
             Factory.getOperation(requestAnnotation).get().handleQueryParameters(parameterAnnotations,item);
@@ -156,6 +164,17 @@ public final class Collection {
         }
 
     }
+
+    /**
+     * builds postman requests, events and tests for the collection
+     * @param methodAnnotations all annotations on method with choco request
+     * @param parameterAnnotations all parameter annotations from methods
+     * @param requestAnnotation the choc request annotation
+     * @param protocol protocol http or https for the url
+     * @param item the requests folder to be added to
+     * @param testItems the test folder to be added to
+     * @return Builder
+     */
     public static Builder builder (List<? extends AnnotationMirror> methodAnnotations,
                                    List<List<? extends AnnotationMirror>> parameterAnnotations,
                             Annotation requestAnnotation,  String protocol,
