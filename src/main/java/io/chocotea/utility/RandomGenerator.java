@@ -10,17 +10,17 @@ public class RandomGenerator {
     public static Object generate(boolean generateRandom, DynamicVariables variable, String type){
         //TODO: if inner class
 
-        if(Objects.equals(type, "java.lang.String")){
+        if(type.contains("String")){
             return generateRandom ? "{{$"+variable+"}}" : "toast";
-        }else if(Objects.equals(type, "java.lang.Boolean") || Objects.equals(type, "boolean")){
+        }else if(type.contains( "Boolean") || type.contains( "boolean")){
             return generateRandom ? "{{$"+variable+"}}" : false;
-        } else if(Objects.equals(type, "int") || Objects.equals(type, "java.lang.Integer")){
+        } else if(type.contains( "int") || type.contains( "Integer")){
             return generateRandom ? variable : new Random().nextInt();
-        }else if(Objects.equals(type, "java.lang.Double") || Objects.equals(type, "double")
-                || Objects.equals(type, "java.math.BigDecimal") || Objects.equals(type, "float")
-                || Objects.equals(type, "java.lang.Float")){
+        }else if(type.contains( "Double") || type.contains( "double")
+                || type.contains( "BigDecimal") || type.contains( "float")
+                || type.contains( "Float")){
             return generateRandom ? variable : new Random().nextDouble();
-        }  else if(Objects.equals(type, "long") || Objects.equals(type, "java.lang.Long")){
+        }  else if(type.contains( "long") || type.contains( "Long")){
             return generateRandom ? variable : new Random().nextLong();
         }
         else{

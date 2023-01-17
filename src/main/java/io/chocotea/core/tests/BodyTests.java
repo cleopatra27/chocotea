@@ -208,7 +208,8 @@ public class BodyTests extends TestGenerator.PostmanVerify {
             max = field.getAnnotation(DecimalMax.class).value();
 
             mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
-                    new Random().nextDouble(Double.parseDouble(max)), "DecimalMax"));
+                    max.equals("0.0") ? -0.0 :
+                            new Random().nextDouble(Double.parseDouble(max)), "DecimalMax"));
         }
     }
     private void validateDecimalMin(Item item, Element field, List<Item> mixedItems){
@@ -217,7 +218,8 @@ public class BodyTests extends TestGenerator.PostmanVerify {
             min = field.getAnnotation(DecimalMin.class).value();
 
             mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_LESS_DECIMAL_PLACES",
-                    new Random().nextDouble(Double.parseDouble(min)), "DecimalMin"));
+                    min.equals("0.0") ? -0.0 :
+                            new Random().nextDouble(Double.parseDouble(min)), "DecimalMin"));
         }
     }
     private Item validateDigit(Item item, Element field){
