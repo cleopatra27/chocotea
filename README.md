@@ -1,4 +1,4 @@
-# ChocoTea ☕️'
+# ChocoTea ☕️
 ⭐ Star on GitHub — it motivates a lot!
 
 Chocotea is a library that generates postman collection, environment and integration tests from java code.
@@ -34,14 +34,39 @@ compile("io.chocotea:chocotea:1.0")
 ## Usage (Annotations)
 - [@SpringCollection](documentation/SpringCollection.md)
 - [@SpringRequest](documentation/SpringCollection.md)
+- [@JakartaCollection](documentation/JakartaCollection.md)
+- [@JakartaRequest](documentation/JakartaCollection.md)
 - [@JavaxCollection](documentation/JavaxCollection.md)
 - [@JavaxRequest](documentation/JavaxRequest.md)
 - [@ChocoRandom](documentation/ChocoRandom.md)
+- [@ChocoExpect](documentation/ChocoExpect.md)
 - [@ChocoDuplicateTest](documentation/ChocoDuplicateTest.md)
 - [@ChocoCurrencyTest](documentation/ChocoCurrencyTest.md)
 
+## Example
+This example shows a spring collection variables defined
+```java
+@SpringCollection(
+        name = "susan more collection", 
+        createTest = true, 
+        baseUrl = "https://example.com")
+public class PathGenerator {
+    
+    @SpringRequest(requestBean = Info.class, auth = Auth.Type.bearer, authValue = "ABCTOKEN")
+    @PostMapping(value = "/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID}")
+    public String generate(
+            @PathVariable( "resortID" )  int resortID,
+            @RequestParam("id") @NotNull @ChocoRandom(dynamic = DynamicVariables.randomCatchPhrase) String id,
+            @RequestBody Info resource, 
+            @RequestHeader("Authorization") String authorization){
+        ....
+    }
+    
+}
+```
+
 ## Language
-This is language of the request. The default is json and options are:
+This is the list of languages that can be passed to the request. The default is json and options are:
 ```text
     text,
     json,
@@ -51,7 +76,7 @@ This is language of the request. The default is json and options are:
 ```
 
 ## Auth
-This is used to define the auth type for the request. The default is noauth and options are:
+This is the list of auth type that can be passed to the request. The default is noauth and options are:
 ```text
     apikey,
     awsv4,
@@ -69,5 +94,5 @@ This is used to define the auth type for the request. The default is noauth and 
 This library runs on compile, after which your collection and environment json files are stored in 
 your-project-folder/target/generated-sources/annotations
 
-## Sample collection [HERE](documentation/sample/sampleCollection.json)
-## Sample environment [HERE](documentation/sample/sampleEnvironment.json)
+Sample collection [HERE](documentation/sample/sampleCollection.json)
+Sample environment [HERE](documentation/sample/sampleEnvironment.json)
