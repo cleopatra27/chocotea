@@ -14,6 +14,8 @@ and works with:
 This can be used with more than one controller on any or all the supported libraries, 
 however, they need to have different collection names.
 
+![Snap](https://user-images.githubusercontent.com/18359815/212893841-0dd97c0c-d7ac-432c-9278-748e563e4895.png)
+
 ## Installation
 ### Maven
 ```java
@@ -43,10 +45,6 @@ compile("io.chocotea:chocotea:1.0")
 - [@ChocoDuplicateTest](documentation/ChocoDuplicateTest.md)
 - [@ChocoCurrencyTest](documentation/ChocoCurrencyTest.md)
 
-## Example
-This example shows a spring collection variables defined
-
-![Snap](https://user-images.githubusercontent.com/18359815/212893841-0dd97c0c-d7ac-432c-9278-748e563e4895.png)
 
 ## Language
 This is the list of languages that can be passed to the request. The default is json and options are:
