@@ -1,11 +1,10 @@
 package io.chocotea.core;
 
-import io.chocotea.bean.postman.Header;
-import io.chocotea.bean.postman.Item;
-import io.chocotea.bean.postman.Query;
-import io.chocotea.bean.postman.Url;
+import io.chocotea.bean.postman.*;
+import io.chocotea.utility.RandomGenerator;
 
 import javax.lang.model.element.AnnotationMirror;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -73,6 +72,11 @@ public class JakartaController implements Controller {
                         //if ChocoRandom; handle
                         if (val.getAnnotationType().asElement().getSimpleName().toString().equals("ChocoRandom")) {
                             param.set("{{$" + getValue(val, "dynamic") + "}}");
+                        }else{
+                            //TODO change this to get parameter type
+                            param.set((String) RandomGenerator.generate(false,
+                                    null,
+                                    "String"));
                         }
                     });
 
@@ -108,6 +112,33 @@ public class JakartaController implements Controller {
                                         }
                                     }
 
+                                }
+                            });
+                        }
+                    }
+                }
+        ));
+    }
+
+    @Override
+    public void handleFormParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item) {
+        parameterAnnotations.forEach(annotationMirror -> annotationMirror.forEach(annotation -> {
+                    {
+                        if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals("FormParam")) {
+                            //if ChocoRandom; handle
+                            List<Auth.Data> urlencoded = new ArrayList<>();
+                            annotationMirror.forEach(val -> {
+                                if (val.getAnnotationType().asElement().getSimpleName().toString().equals("ChocoRandom")) {
+                                    //get variable with name from list and replace
+                                    urlencoded.add(new Auth.Data(getValue(annotation, "value"),
+                                            "{{$" + getValue(val, "dynamic") + "}}"));
+                                    item.getRequest().getBody().setUrlencoded(urlencoded);
+
+                                }else{
+                                    urlencoded.add(new Auth.Data(getValue(annotation, "value"),
+                                            (String) RandomGenerator.generate(
+                                                    false, null, "String")));
+                                    item.getRequest().getBody().setUrlencoded(urlencoded);
                                 }
                             });
                         }

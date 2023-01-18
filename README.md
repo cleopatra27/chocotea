@@ -4,8 +4,12 @@
 Chocotea is a library that generates postman collection, environment and integration tests from java code.
 
 The aim of chocotea is to help reduce the amount of time it takes to setup a postman
-collection with requests and tests manually, it runs at compile, generates collection json file 
+collection with requests and tests manually. It also helps with sharing API codebase(s),
+new developers can generate a postman collection for their changes.
+
+Chocotea runs at compile, generates collection json file 
 and works with:
+
 
 - [Spring](https://mvnrepository.com/artifact/org.springframework/spring-core)
 - [Jakarta](https://mvnrepository.com/artifact/jakarta.ws.rs/jakarta.ws.rs-api) 

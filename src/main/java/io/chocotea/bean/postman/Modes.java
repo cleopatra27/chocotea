@@ -4,7 +4,7 @@ public enum Modes {
 
     none,
     formData,
-    xWwwFormUrlencoded,
+    urlencoded,
     raw,
     binary,
     graphql;

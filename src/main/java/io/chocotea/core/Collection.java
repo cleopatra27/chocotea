@@ -57,6 +57,17 @@ public final class Collection {
             return this;
         }
 
+        public Builder setMode(){
+            //TODO: prevent this method from growing
+            item.getRequest().getBody().setMode(
+                    requestAnnotation.annotationType().getSimpleName().contains("SpringRequest")
+                                    ? ((SpringRequest)requestAnnotation).mode().name()
+                                    : ((JavaxRequest)requestAnnotation).mode().name()
+                             //: ((JakartaRequest)requestAnnotation).language().name()
+                    );
+            return this;
+        }
+
         /**
          * sets the host to user defined
          * @return Builder
@@ -94,7 +105,8 @@ public final class Collection {
                         ((JakartaRequest)requestAnnotation).request();
                     }
                 } catch( MirroredTypeException mte ) {
-                    item.getRequest().getBody().setMode(raw.name());
+                    //TODO handle extended classes
+//                    item.getRequest().getBody().setMode(raw.name());
                     if(!((DeclaredType) mte.getTypeMirror()).asElement().getSimpleName().toString().contains("DefaultClass")) {
                         item.getRequest().getBody().setRaw(BeanReader.generate(mte.getTypeMirror()));
                     }
@@ -106,7 +118,7 @@ public final class Collection {
 
         /**
          * adds auth to request
-         * @return
+         * @return Builder
          */
         public Builder setAuth(){
             //TODO: prevent this method from growing
@@ -171,6 +183,7 @@ public final class Collection {
             Factory.getOperation(requestAnnotation).get().handleHeaderParameters(parameterAnnotations,item);
             Factory.getOperation(requestAnnotation).get().handleQueryParameters(parameterAnnotations,item);
             Factory.getOperation(requestAnnotation).get().handlePathParameters(parameterAnnotations,item);
+            Factory.getOperation(requestAnnotation).get().handleFormParameters(parameterAnnotations,item);
         }
 
     }

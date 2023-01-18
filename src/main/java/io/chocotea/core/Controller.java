@@ -26,4 +26,5 @@ public interface Controller {
      void handleQueryParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 
      void handlePathParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
+     void handleFormParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item);
 }

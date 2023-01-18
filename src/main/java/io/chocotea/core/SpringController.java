@@ -1,9 +1,7 @@
 package io.chocotea.core;
 
-import io.chocotea.bean.postman.Header;
-import io.chocotea.bean.postman.Item;
-import io.chocotea.bean.postman.Query;
-import io.chocotea.bean.postman.Url;
+import io.chocotea.bean.postman.*;
+import io.chocotea.utility.RandomGenerator;
 
 import javax.lang.model.element.AnnotationMirror;
 import java.util.List;
@@ -90,12 +88,18 @@ public class SpringController implements Controller {
                 final String concatenator = "&";
                 AtomicReference<String> param = new AtomicReference<>("");
 
+                //todo check if required
                 if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals("RequestParam")) {
 
                     annotationMirror.forEach(val -> {
                         //if ChocoRandom; handle
                         if (val.getAnnotationType().asElement().getSimpleName().toString().equals("ChocoRandom")) {
                             param.set("{{$" + getValue(val, "dynamic") + "}}");
+                        } else{
+                            //TODO change this to get parameter type
+                            param.set((String) RandomGenerator.generate(false,
+                                    null,
+                                    "String"));
                         }
                     });
 
@@ -137,5 +141,10 @@ public class SpringController implements Controller {
                     }
                 }
         ));
+    }
+
+    @Override
+    public void handleFormParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item) {
+
     }
 }

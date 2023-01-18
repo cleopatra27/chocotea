@@ -85,7 +85,7 @@ public class Auth {
         private String key;
         private String value;
 
-        private Data(String key, String value){
+        public Data(String key, String value){
             this.key = key;
             this.type = "string";
             this.value = value;

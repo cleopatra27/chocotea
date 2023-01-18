@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,6 +16,7 @@ public class Body {
     private String mode;
     private String raw;
     private Options options = new Options();
+    private List<Auth.Data> urlencoded;
 
     @Override
     public String toString() {

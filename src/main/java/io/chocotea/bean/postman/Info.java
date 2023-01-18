@@ -7,7 +7,6 @@ import io.chocotea.core.annotations.ChocoRandom;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.chocotea.utility.Properties;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,8 +22,7 @@ public class Info {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String schema;
+    private final String schema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
 
     @ChocoRandom(dynamic = DynamicVariables.randomFirstName)
     private String reference;
@@ -32,7 +30,6 @@ public class Info {
     public Info(String name){
       this._postman_id = UUID.randomUUID().toString();
       this.name = name;
-      this.schema = Properties.getProperty("SCHEMA");
     }
 
     @Override

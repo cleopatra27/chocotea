@@ -20,7 +20,7 @@ import static javax.tools.Diagnostic.Kind.NOTE;
 @SupportedAnnotationTypes({"io.chocotea.core.annotations.SpringCollection",
         "io.chocotea.core.annotations.JavaxCollection",
         "io.chocotea.core.annotations.JakartaCollection"})
-@SupportedSourceVersion(SourceVersion.RELEASE_19)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @AutoService(Processor.class)
 public class CollectionProcessor extends AbstractProcessor{
     private Collection collection;
@@ -87,6 +87,7 @@ public class CollectionProcessor extends AbstractProcessor{
                             //.setProtocol()
                             .setBean()
                             .setAuth()
+                            .setMode()
                             .createTests(test)
                             .build();
 
