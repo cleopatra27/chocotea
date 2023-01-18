@@ -1,8 +1,6 @@
 # ChocoTea ☕️
 ⭐ Star on GitHub — it motivates a lot!
 
-<a href="https://www.producthunt.com/posts/chocotea?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-chocotea" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=375429&theme=light" alt="chocotea - Generate&#0032;a&#0032;postman&#0032;collection&#0032;from&#0032;your&#0032;java&#0032;code | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
-
 Chocotea is a library that generates postman collection, environment and integration tests from java code.
 
 The aim of chocotea is to help reduce the amount of time it takes to setup a postman
