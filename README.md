@@ -26,7 +26,7 @@ however, they need to have different collection names.
     <dependency>
         <groupId>io.chocotea</groupId>
         <artifactId>chocotea</artifactId>
-        <version>1.0A</version>
+        <version>1.0EE</version>
     </dependency>
 ```
 
