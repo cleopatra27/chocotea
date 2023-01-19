@@ -11,6 +11,7 @@ import javax.validation.constraints.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.IntStream;
 
 public class BodyTests extends TestGenerator.PostmanVerify {
 
@@ -35,7 +36,7 @@ public class BodyTests extends TestGenerator.PostmanVerify {
 //            }
 //        });
         fields.forEach(field -> {
-            if(field.getKind().isVariable()) {
+            if(field.getKind().isField()) {
                 field.getAnnotationMirrors().forEach(annotation -> {
                     if(annotation.getAnnotationType().asElement().getSimpleName().toString().contains("ChocoExpect")){
 
@@ -64,7 +65,7 @@ public class BodyTests extends TestGenerator.PostmanVerify {
         //look for chocoExpect
         Map<String, Object> expect = new HashMap<>();
         requestFields.forEach(field -> {
-            if(field.getKind().isVariable()) {
+            if(field.getKind().isField()) {
                 itemTemp.get().getRequest().getBody().setRaw(
                         new JSONObject(itemTemp.get().getRequest().getBody().getRaw())
                                 .put(field.getSimpleName().toString(), "").toString()
@@ -73,7 +74,7 @@ public class BodyTests extends TestGenerator.PostmanVerify {
         });
 
         responseFields.forEach(field -> {
-            if(field.getKind().isVariable()) {
+            if(field.getKind().isField()) {
                 field.getAnnotationMirrors().forEach(annotation -> {
                     if(annotation.getAnnotationType().asElement().getSimpleName().toString().contains("ChocoExpect")){
                         expect.put(field.asType().toString(),
@@ -128,9 +129,9 @@ public class BodyTests extends TestGenerator.PostmanVerify {
         for (Element field: fields) {
 
             //handle the test on said field
-            if(field.getKind().isVariable()) {
+            if(field.getKind().isField()) {
                 mixedItems.add(validateNotNull(itemSent, field));
-                mixedItems.add(validateSize(itemSent, field));
+                validateSize(itemSent, field, mixedItems);
                 mixedItems.add(validateNotBlank(itemSent, field));
                 mixedItems.add(validateNotEmpty(itemSent, field));
                 mixedItems.add(verifyRandomNumbers(itemSent, field));
@@ -184,19 +185,19 @@ public class BodyTests extends TestGenerator.PostmanVerify {
         }
     }
 
-    private Item validateSize(Item item, Element field){
+    //TODO add less than character length
+    private void validateSize(Item item, Element field, List<Item> mixedItems){
         AtomicInteger min = new AtomicInteger();
         AtomicInteger max = new AtomicInteger();
         if(field.getAnnotation(Size.class) != null){
             min.set(field.getAnnotation(Size.class).min());
             max.set(field.getAnnotation(Size.class).max());
+
+            mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_GREATER_SIZE_FIELDS_",
+                    new Random().nextInt(max.get()),
+                    "Size"));
         }
 
-        //add less than charcter lenght
-
-        return getItemTest(item, field, "VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_GREATER_SIZE_FIELDS_",
-                new Random().nextInt(min.get(),max.get() + 100) + min.get(),
-                "Size");
     }
     private Item validateNotBlank(Item item, Element field){
         return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_BLANK_", "", "NotBlank");
@@ -209,7 +210,7 @@ public class BodyTests extends TestGenerator.PostmanVerify {
 
             mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
                     max.equals("0.0") ? -0.0 :
-                            new Random().nextDouble(Double.parseDouble(max)), "DecimalMax"));
+                            new Random().doubles((long) Double.parseDouble(max)), "DecimalMax"));
         }
     }
     private void validateDecimalMin(Item item, Element field, List<Item> mixedItems){
@@ -219,7 +220,7 @@ public class BodyTests extends TestGenerator.PostmanVerify {
 
             mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_LESS_DECIMAL_PLACES",
                     min.equals("0.0") ? -0.0 :
-                            new Random().nextDouble(Double.parseDouble(min)), "DecimalMin"));
+                            new Random().doubles((long) Double.parseDouble(min)), "DecimalMin"));
         }
     }
     private Item validateDigit(Item item, Element field){

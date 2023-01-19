@@ -4,6 +4,7 @@ import io.chocotea.bean.postman.*;
 import io.chocotea.utility.RandomGenerator;
 
 import javax.lang.model.element.AnnotationMirror;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -21,7 +22,7 @@ public class SpringController implements Controller {
                         .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                item.getRequest().getUrl().getPath().addAll(Arrays.asList(getValue(annotationMirror, "value")
                         .substring(1, getValue(annotationMirror, "value").length() - 1).split("/")));
 
             } else if (annotationMirror.getAnnotationType().asElement().getSimpleName().toString().equals("GetMapping")) {
@@ -31,7 +32,7 @@ public class SpringController implements Controller {
                         .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                item.getRequest().getUrl().getPath().addAll(Arrays.asList(getValue(annotationMirror, "value")
                         .substring(1, getValue(annotationMirror, "value").length() - 1).split("/")));
 
             } else if (annotationMirror.getAnnotationType().asElement().getSimpleName().toString().equals("PutMapping")) {
@@ -41,7 +42,7 @@ public class SpringController implements Controller {
                         .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                item.getRequest().getUrl().getPath().addAll(Arrays.asList(getValue(annotationMirror, "value")
                         .substring(1, getValue(annotationMirror, "value").length() - 1).split("/")));
 
             } else if (annotationMirror.getAnnotationType().asElement().getSimpleName().toString().equals("DeleteMapping")) {
@@ -51,7 +52,7 @@ public class SpringController implements Controller {
                         .substring(1, getValue(annotationMirror, "value").length() - 1)));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirror, "value")
+                item.getRequest().getUrl().getPath().addAll(Arrays.asList(getValue(annotationMirror, "value")
                         .substring(1, getValue(annotationMirror, "value").length() - 1)
                         .split("/")));
             }

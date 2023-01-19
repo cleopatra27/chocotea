@@ -5,6 +5,7 @@ import io.chocotea.utility.RandomGenerator;
 
 import javax.lang.model.element.AnnotationMirror;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -36,7 +37,7 @@ public class JakartaController implements Controller {
                 item.getRequest().setUrl(new Url(baseUrl + getValue(annotationMirro, "value")));
 
                 //add paths
-                item.getRequest().getUrl().getPath().addAll(List.of(getValue(annotationMirro, "value").split("/")));
+                item.getRequest().getUrl().getPath().addAll(Arrays.asList(getValue(annotationMirro, "value").split("/")));
             }
         });
 
@@ -122,29 +123,29 @@ public class JakartaController implements Controller {
 
     @Override
     public void handleFormParameters(List<List<? extends AnnotationMirror>> parameterAnnotations, Item item) {
+        List<Auth.Data> urlencoded = new ArrayList<>();
         parameterAnnotations.forEach(annotationMirror -> annotationMirror.forEach(annotation -> {
                     {
                         if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals("FormParam")) {
                             //if ChocoRandom; handle
-                            List<Auth.Data> urlencoded = new ArrayList<>();
                             annotationMirror.forEach(val -> {
                                 if (val.getAnnotationType().asElement().getSimpleName().toString().equals("ChocoRandom")) {
                                     //get variable with name from list and replace
                                     urlencoded.add(new Auth.Data(getValue(annotation, "value"),
                                             "{{$" + getValue(val, "dynamic") + "}}"));
-                                    item.getRequest().getBody().setUrlencoded(urlencoded);
-
                                 }else{
+                                    //TODO change get value to use .getElementValues()
                                     urlencoded.add(new Auth.Data(getValue(annotation, "value"),
                                             (String) RandomGenerator.generate(
+                                                    //TODO change to use arameter type
                                                     false, null, "String")));
-                                    item.getRequest().getBody().setUrlencoded(urlencoded);
                                 }
                             });
                         }
                     }
                 }
         ));
+        item.getRequest().getBody().setUrlencoded(urlencoded);
     }
 }
 

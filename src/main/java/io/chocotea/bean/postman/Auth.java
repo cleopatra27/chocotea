@@ -35,26 +35,29 @@ public class Auth {
         List<Data> dt = new ArrayList<>();
 
         switch (type){
-            case bearer ->
-                    dt.add(new Data("token", values[0]));
-            case apikey ->
+            case bearer :
+                dt.add(new Data("token", values[0]));
+                break;
+            case apikey :
                     dt.add(new Data("key", values[0]));
-            case basic -> {
+                break;
+            case basic :
                 dt.add(new Data("password", values[1]));
                 dt.add(new Data("username", values[0]));
-            }
-            case oauth2 ->
+                break;
+            case oauth2 :
                     dt.add(new Data("addTokenTo", values[0]));
-            case digest -> {
+                break;
+            case digest:
                 dt.add(new Data("password", values[1]));
                 dt.add(new Data("username", values[0]));
                 dt.add(new Data("algorithm", values[2]));
-            }
-            case awsv4 -> {
+                break;
+            case awsv4 :
                 dt.add(new Data("accessKey", values[0]));
                 dt.add(new Data("secretKey", values[1]));
-            }
-            default -> {}
+                break;
+            default : break;
 
         }
         auth.put(type.name(), dt);

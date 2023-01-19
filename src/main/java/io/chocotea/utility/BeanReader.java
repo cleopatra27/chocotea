@@ -23,7 +23,7 @@ public class BeanReader {
 
                 //loop through fields
                 (((DeclaredType) typeMirror).asElement()).getEnclosedElements().stream().skip(1).forEach(element -> {
-                    if(element.getKind().isVariable()) {
+                    if(element.getKind().isField()) {
                         if (element.getAnnotation(ChocoRandom.class) != null) {
                             generateRandom.set(true);
                             variable.set(element.getAnnotation(ChocoRandom.class).dynamic());

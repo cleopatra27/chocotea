@@ -13,7 +13,6 @@ import javax.lang.model.type.MirroredTypeException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import static io.chocotea.bean.postman.Auth.auth;
-import static io.chocotea.bean.postman.Modes.raw;
 
 /**
  * Handles building the postman collection from method
@@ -137,8 +136,8 @@ public final class Collection {
 
         /**
          * creates tests for header, auth, path, body and adds to request
-         * @param test
-         * @return
+         * @param test boolean
+         * @return Builder
          */
         public Builder createTests(boolean test)  {
             //TODO: prevent this method from growing

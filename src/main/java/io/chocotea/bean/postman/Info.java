@@ -17,14 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Info {
 
-    @NotNull
     private String _postman_id;
-    @NotBlank
     private String name;
-
     private final String schema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
-
-    @ChocoRandom(dynamic = DynamicVariables.randomFirstName)
     private String reference;
 
     public Info(String name){
