@@ -26,7 +26,7 @@ however, they need to have different collection names.
     <dependency>
         <groupId>io.chocotea</groupId>
         <artifactId>chocotea</artifactId>
-        <version>1.0T</version>
+        <version>1.0EE</version>
     </dependency>
 ```
 
@@ -48,6 +48,13 @@ compile("io.chocotea:chocotea:1.0")
 - [@ChocoExpect](documentation/ChocoExpect.md)
 - [@ChocoDuplicateTest](documentation/ChocoDuplicateTest.md)
 - [@ChocoCurrencyTest](documentation/ChocoCurrencyTest.md)
+
+
+This library runs on compile, after which your collection and environment json files are stored in 
+your-project-folder/target/generated-sources/annotations
+
+Sample collection [HERE](documentation/sample/sampleCollection.json)
+Sample environment [HERE](documentation/sample/sampleEnvironment.json)
 
 
 ## Language
@@ -75,9 +82,3 @@ This is the list of auth type that can be passed to the request. The default is 
     oauth2,
     ntlm
 ```
-
-This library runs on compile, after which your collection and environment json files are stored in 
-your-project-folder/target/generated-sources/annotations
-
-Sample collection [HERE](documentation/sample/sampleCollection.json)
-Sample environment [HERE](documentation/sample/sampleEnvironment.json)
