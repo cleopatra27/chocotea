@@ -3,15 +3,14 @@ package io.chocotea.core.tests;
 import io.chocotea.bean.HTTPVerbs;
 import io.chocotea.bean.postman.Event;
 import io.chocotea.bean.postman.Item;
-import io.chocotea.core.annotations.ChocoExpect;
 import org.json.JSONObject;
 
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
-import javax.validation.constraints.*;
+import javax.lang.model.element.ExecutableElement;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.IntStream;
 
 public class BodyTests extends TestGenerator.PostmanVerify {
 
@@ -131,7 +130,8 @@ public class BodyTests extends TestGenerator.PostmanVerify {
             //handle the test on said field
             if(field.getKind().isField()) {
                 mixedItems.add(validateNotNull(itemSent, field));
-                validateSize(itemSent, field, mixedItems);
+                validateGreaterSize(itemSent, field, mixedItems);
+                validateLessSize(itemSent, field, mixedItems);
                 mixedItems.add(validateNotBlank(itemSent, field));
                 mixedItems.add(validateNotEmpty(itemSent, field));
                 mixedItems.add(verifyRandomNumbers(itemSent, field));
@@ -185,43 +185,64 @@ public class BodyTests extends TestGenerator.PostmanVerify {
         }
     }
 
-    //TODO add less than character length
-    private void validateSize(Item item, Element field, List<Item> mixedItems){
-        AtomicInteger min = new AtomicInteger();
-        AtomicInteger max = new AtomicInteger();
-        if(field.getAnnotation(Size.class) != null){
-            min.set(field.getAnnotation(Size.class).min());
-            max.set(field.getAnnotation(Size.class).max());
+    private void validateLessSize(Item item, Element field, List<Item> mixedItems){
+        field.getAnnotationMirrors().forEach(annotationMirror -> {
+            if(annotationMirror.getAnnotationType().asElement().getSimpleName().toString().contains("Size")){
+                mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_LESS_SIZE_FIELDS_",
+                        new Random().nextInt(Integer.parseInt(Objects.requireNonNull(getValue(annotationMirror, "min")))),
+                        "Size"));
+            }
+        });
+    }
 
-            mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_GREATER_SIZE_FIELDS_",
-                    new Random().nextInt(max.get()),
-                    "Size"));
-        }
-
+    private void validateGreaterSize(Item item, Element field, List<Item> mixedItems){
+        field.getAnnotationMirrors().forEach(annotationMirror -> {
+            if(annotationMirror.getAnnotationType().asElement().getSimpleName().toString().contains("Size")){
+                mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_ERROR_MESSAGE_WITH_GREATER_SIZE_FIELDS_",
+                        new Random().nextInt(Integer.parseInt(Objects.requireNonNull(getValue(annotationMirror, "max")))),
+                        "Size"));
+            }
+        });
     }
     private Item validateNotBlank(Item item, Element field){
         return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_FIELD_AS_BLANK_", "", "NotBlank");
     }
 
-    private void validateDecimalMax(Item item, Element field, List<Item> mixedItems){
-        String max;
-        if(field.getAnnotation(DecimalMax.class) != null){
-            max = field.getAnnotation(DecimalMax.class).value();
-
-            mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
-                    max.equals("0.0") ? -0.0 :
-                            new Random().doubles((long) Double.parseDouble(max)), "DecimalMax"));
+    private String getValue(AnnotationMirror annotationMirror, String key) {
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry
+                : annotationMirror.getElementValues().entrySet()) {
+            if (key.equals(entry.getKey().getSimpleName().toString())) {
+                AnnotationValue annotationValue = entry.getValue();
+                return annotationValue.getValue().toString();
+            }
         }
+        return null;
+    }
+    private void validateDecimalMax(Item item, Element field, List<Item> mixedItems){
+        AtomicReference<String> max = new AtomicReference<>();
+        AtomicReference<String> finalMax = max;
+        field.getAnnotationMirrors().forEach(annotationMirror -> {
+            if(annotationMirror.getAnnotationType().asElement().getSimpleName().toString().contains("DecimalMax")){
+                finalMax.set(getValue(annotationMirror, "value"));
+
+                mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
+                        finalMax.equals("0.0") ? -0.0 :
+                                new Random().doubles((long) Double.parseDouble(finalMax.get())), "DecimalMax"));
+            }
+        });
     }
     private void validateDecimalMin(Item item, Element field, List<Item> mixedItems){
-        String min;
-        if(field.getAnnotation(DecimalMin.class) != null){
-            min = field.getAnnotation(DecimalMin.class).value();
+        AtomicReference<String> min = new AtomicReference<>();
+        AtomicReference<String> finalMin = min;
+        field.getAnnotationMirrors().forEach(annotationMirror -> {
+            if(annotationMirror.getAnnotationType().asElement().getSimpleName().toString().contains("DecimalMin")){
+                finalMin.set(getValue(annotationMirror, "value"));
 
-            mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_LESS_DECIMAL_PLACES",
-                    min.equals("0.0") ? -0.0 :
-                            new Random().doubles((long) Double.parseDouble(min)), "DecimalMin"));
-        }
+                mixedItems.add(getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
+                        finalMin.equals("0.0") ? -0.0 :
+                                new Random().doubles((long) Double.parseDouble(finalMin.get())), "DecimalMax"));
+            }
+        });
     }
     private Item validateDigit(Item item, Element field){
         return getItemTest(item, field, "VERIFY_ENDPOINT_WITH_MORE_DECIMAL_PLACES",
